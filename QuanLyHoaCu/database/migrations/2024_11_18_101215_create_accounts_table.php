@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            // insert column
+            $table->id('account_id');
+            $table->string('username')->unique();
+            $table->string('password');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->integer('is_active');
+            $table->rememberToken();
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('role_id')->references('role_id')->on('roles')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +31,12 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('accounts', function (Blueprint $table) {
+            $table->dropForeign(['role_id']);
+            $table->dropIndex(['role_id']);
+            $table->dropColumn('role_id');
+        });
+
         Schema::dropIfExists('accounts');
     }
 };
