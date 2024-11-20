@@ -12,8 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bills', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('bill_id');
+            $table->integer('tax_code')->nullable();
+            $table->string('note')->nullable();
+
+            $table->unsignedBigInteger('staff_id');
+            $table->foreign('staff_id')
+                ->references('staff_id')
+                ->on('staffs')
+                ->onDelete('cascade');
+
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('order_id')
+                ->references('order_id')
+                ->on('orders')
+                ->onDelete('cascade');
         });
     }
 

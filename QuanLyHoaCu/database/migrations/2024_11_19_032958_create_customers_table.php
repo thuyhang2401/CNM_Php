@@ -19,7 +19,11 @@ return new class extends Migration
             $table->string('phone_number', 20)->nullable();
             $table->string('address', 100)->nullable();
             $table->string('avatar', 50)->nullable();
-            //account_id
+            $table->unsignedBigInteger('account_id');
+            $table->foreign('account_id')
+                ->references('account_id')
+                ->on('accounts')
+                ->onDelete('cascade');
         });
     }
 

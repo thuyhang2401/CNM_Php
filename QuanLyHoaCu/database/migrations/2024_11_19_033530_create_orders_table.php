@@ -21,7 +21,10 @@ return new class extends Migration
             $table->enum('status', ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao', 'Đã giao', 'Đã hủy']);
             $table->integer('delivery_fee');
             $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('customer_id')->on('customers');
+            $table->foreign('customer_id')
+                ->references('customer_id')
+                ->on('customers')
+                ->onDelete('cascade');
 
         });
     }

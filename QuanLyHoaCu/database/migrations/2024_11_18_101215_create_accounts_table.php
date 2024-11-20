@@ -20,9 +20,10 @@ return new class extends Migration
             $table->integer('is_active');
             $table->rememberToken();
             $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')->references('role_id')->on('roles')
+            $table->foreign('role_id')
+                ->references('role_id')
+                ->on('roles')
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
