@@ -1,14 +1,16 @@
 <?php
 
-use App\Models\Product;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $product = Product::where('category_id', 1)->get();
+    return redirect()->route('product.index');
+});
 
-    return response()->json([
-        'message' => 'success',
-        'data' => $product,
-        'code' => 200
-    ]);
+Route::prefix('QuanLyHoaCu')->group(function () {
+    Route::get('/index', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/shop', [ProductController::class, 'shop'])->name('product.shop');
+    Route::get('/shop/product', [ProductController::class, 'shopDetail'])->name('product.detail');
+    Route::get('/cart', [CartController::class, 'listCart'])->name('cart.list');
 });
