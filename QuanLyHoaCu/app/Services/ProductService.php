@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\Category;
 use App\Models\Product;
 use DB;
 
