@@ -156,36 +156,14 @@
                                     <div class="mb-3">
                                         <h4>Danh mục</h4>
                                         <ul class="list-unstyled fruite-categorie">
+                                            @foreach ($categories as $category)
                                             <li>
                                                 <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Bút</a>
-                                                    <span>(3)</span>
+                                                    <a href="#"><i class="fas fa-pencil-alt me-2"></i>{{ $category->category_name }}</a>
+                                                    <span>({{ $category->product_count }})</span>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Cọ</a>
-                                                    <span>(5)</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Giấy</a>
-                                                    <span>(2)</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Màu</a>
-                                                    <span>(8)</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
-                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Phụ kiện</a>
-                                                    <span>(5)</span>
-                                                </div>
-                                            </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -198,12 +176,13 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <h4 class="mb-3">Sản phẩm nổi bật</h4>
+                                    @foreach ($featuredProducts as $product)
                                     <div class="d-flex align-items-center justify-content-start">
                                         <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                            <img src="{{ asset('img/featur-1.jpg') }}" class="img-fluid rounded" alt="">
+                                            <img src="{{ asset('img/'. $product->image) }}" class="rounded" style="width: 100px; height: 100px;" alt="">
                                         </div>
                                         <div>
-                                            <h6 class="mb-2">Big Banana</h6>
+                                            <h6 class="mb-2">{{ $product->product_name }}</h6>
                                             <div class="d-flex mb-2">
                                                 <i class="fa fa-star text-secondary"></i>
                                                 <i class="fa fa-star text-secondary"></i>
@@ -212,10 +191,11 @@
                                                 <i class="fa fa-star"></i>
                                             </div>
                                             <div class="d-flex mb-2">
-                                                <h5 class="fw-bold me-2">2.99 VND</h5>
+                                                <h5 class="fw-bold me-2">{{ number_format($product->price, 0, '', ',') }} VND</h5>
                                             </div>
                                         </div>
                                     </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -225,14 +205,14 @@
                                 <div class="col-md-6 col-lg-6 col-xl-4">
                                     <div class="rounded position-relative fruite-item">
                                         <div class="fruite-img">
-                                            <img src="{{ asset('img/'. $product->image) }}" class="img-fluid w-100 rounded-top" alt="">
+                                            <img src="{{ asset('img/'. $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
                                         </div>
                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ $product->category->category_name }}</div>
-                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                            <h4>{{ $product->product_name }}</h4>
-                                            <p>{{ Str::limit($product->description, 40) }}</p>
-                                            <div class="d-flex justify-content-between flex-lg-wrap">
-                                                <p class="text-dark fs-5 fw-bold mb-0">{{ $product->price }} VND / {{ $product->unit }}</p>
+                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
+                                            <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
+                                            <p class="text-truncate-2-lines">{{ $product->description }}</p>
+                                            <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                                <p class="text-dark fs-5 fw-bold mb-0">{{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}</p>
                                                 <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
                                             </div>
                                         </div>
