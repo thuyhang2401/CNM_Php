@@ -72,7 +72,7 @@
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                         <a href="{{ route('cart.list') }}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ $cartQuantity }}</span>
                         </a>
 
                         <div class="nav-item dropdown">
@@ -274,7 +274,7 @@
                                     @foreach ($categories as $category)
                                     <li>
                                         <div class="d-flex justify-content-between fruite-name">
-                                            <a href="#"><i class="fas fa-pencil-alt me-2"></i>{{ $category->category_name }}</a>
+                                            <a href="{{ route('product.shop') }}"><i class="fas fa-pencil-alt me-2"></i>{{ $category->category_name }}</a>
                                             <span>({{ $category->product_count }})</span>
                                         </div>
                                     </li>

@@ -4375,7 +4375,7 @@ fieldset:disabled .btn {
 }
 
 .nav {
-    display: flex;
+    /* display: flex; */
     flex-wrap: wrap;
     padding-left: 0;
     margin-bottom: 0;

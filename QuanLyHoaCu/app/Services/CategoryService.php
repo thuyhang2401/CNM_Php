@@ -20,7 +20,7 @@ class CategoryService
     public function getCategoryWithProduct()
     {
         return $this->category
-        ->withCount('product')
-        ->get();
+            ->withCount('product')
+            ->get();
     }
 }
