@@ -2,59 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
 use App\Services\ProductService;
+use App\Services\CategoryService;
+use App\Services\CartService;
 
 class ShopController extends Controller
 {
     protected $productService;
     protected $categoryService;
+    protected $cartService;
 
-    public function __construct(ProductService $productService, CategoryService $categoryService)
-    {
+    public function __construct(
+        ProductService $productService,
+        CategoryService $categoryService,
+        CartService $cartService
+    ) {
         $this->productService = $productService;
         $this->categoryService = $categoryService;
+        $this->cartService = $cartService;
+    }
+
+    private function getDuplicateData()
+    {
+        return [
+            'featuredProducts' => $this->productService->getFeaturedProduct(),
+            'categories' => $this->categoryService->getAllCategory(),
+            'cartQuantity' => $this->cartService->getCartQuantity(),
+        ];
     }
 
     public function index()
     {
+        $getDuplicateData = $this->getDuplicateData();
         $newestProducts = $this->productService->getNewestProduct();
-        $featuredProducts = $this->productService->getFeaturedProduct();
         $bestSellerProducts = $this->productService->getBestSellerProduct();
-        $categories = $this->categoryService->getAllCategory();
 
-        return view(
-            'index',
-            [
+        return view('index', array_merge($getDuplicateData, [
                 'newestProducts' => $newestProducts,
-                'featuredProducts' => $featuredProducts,
                 'bestSellerProducts' => $bestSellerProducts,
-                'categories' => $categories
-            ]
+            ])
         );
     }
 
     public function shop()
     {
+        $getDuplicateData = $this->getDuplicateData();
         $products = $this->productService->getAllProduct();
-        $featuredProducts = $this->productService->getFeaturedProduct();
-        $categories = $this->categoryService->getAllCategory();
+        $shopQuantity = $this->productService->getProductQuantity();
 
-        return view('shop', [
+        return view('shop', array_merge($getDuplicateData, [
             'products' => $products,
-            'featuredProducts' => $featuredProducts,
-            'categories' => $categories
-        ]);
+            'shopQuantity' => $shopQuantity,
+        ]));
     }
 
     public function shopDetail()
     {
-        $featuredProducts = $this->productService->getFeaturedProduct();
-        $categories = $this->categoryService->getAllCategory();
+        $getDuplicateData = $this->getDuplicateData();
 
-        return view('shop-detail', [
-            'featuredProducts' => $featuredProducts,
-            'categories' => $categories
-        ]);
+        return view('shop-detail', $getDuplicateData);
     }
 }

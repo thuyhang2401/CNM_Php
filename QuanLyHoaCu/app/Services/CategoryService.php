@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Category;
-use Illuminate\Support\Facades\Log;
 
 class CategoryService
 {
@@ -17,7 +16,7 @@ class CategoryService
     public function getAllCategory()
     {
         return $this->category
-        ->withCount('product')
-        ->get();
+            ->withCount('product')
+            ->get();
     }
 }

@@ -72,7 +72,7 @@
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                         <a href="{{ route('cart.list') }}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ $cartQuantity }}</span>
                         </a>
 
                         <div class="nav-item dropdown">
@@ -214,13 +214,13 @@
                     <div class="col-lg-8 text-end">
                         <ul class="nav nav-pills d-inline-flex text-center mb-5">
                             <li class="nav-item">
-                                <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
+                                <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-0">
                                     <span class="text-dark" style="width: 100px;">Tất cả</span>
                                 </a>
                             </li>
                             @foreach ($categories as $category)
                             <li class="nav-item">
-                                <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
+                                <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-{{ $category->category_id }}">
                                     <span class="text-dark" style="width: 100px;">{{ $category->category_name }}</span>
                                 </a>
                             </li>
@@ -229,7 +229,7 @@
                     </div>
                 </div>
                 <div class="tab-content">
-                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div id="tab-0" class="tab-pane fade show p-0 active">
                         <div class="row g-4">
                             <div class="col-lg-12">
                                 <div class="row g-4">
@@ -255,6 +255,34 @@
                             </div>
                         </div>
                     </div>
+                    @foreach ($categories as $category)
+                    <div id="tab-{{ $category->category_id }}" class="tab-pane fade p-0">
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <div class="row g-4">
+                                    @foreach ($newestProducts->where('category_id', $category->category_id) as $product)
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <img src="{{ asset('img/'. $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ $product->category->category_name }}</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
+                                                <h4 class="text-truncate-2-lines" style="text-align: left;">{{ $product->product_name }}</h4>
+                                                <p class="text-truncate-2-lines" style="text-align: left;">{{ $product->description }}</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">{{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}</p>
+                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

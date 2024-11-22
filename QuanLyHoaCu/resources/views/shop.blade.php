@@ -72,7 +72,7 @@
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                         <a href="{{ route('cart.list') }}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ $cartQuantity }}</span>
                         </a>
 
                         <div class="nav-item dropdown">
@@ -155,10 +155,16 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <h4>Danh mục</h4>
-                                        <ul class="list-unstyled fruite-categorie">
+                                        <ul class="list-unstyled fruite-categorie nav nav-pills">
+                                            <li class="nav-item">
+                                                <div class="d-flex justify-content-between fruite-name" data-bs-toggle="pill" href="#tab-0">
+                                                    <a href="#"><i class="fas fa-pencil-alt me-2"></i>Tất cả sản phẩm</a>
+                                                    <span>({{ $shopQuantity }})</span>
+                                                </div>
+                                            </li>
                                             @foreach ($categories as $category)
-                                            <li>
-                                                <div class="d-flex justify-content-between fruite-name">
+                                            <li class="nav-item">
+                                                <div class="d-flex justify-content-between fruite-name" data-bs-toggle="pill" href="#tab-{{ $category->category_id }}">
                                                     <a href="#"><i class="fas fa-pencil-alt me-2"></i>{{ $category->category_name }}</a>
                                                     <span>({{ $category->product_count }})</span>
                                                 </div>
@@ -200,36 +206,91 @@
                             </div>
                         </div>
                         <div class="col-lg-9">
-                            <div class="row g-4 justify-content-center">
-                                @foreach ($products as $product)
-                                <div class="col-md-6 col-lg-6 col-xl-4">
-                                    <div class="rounded position-relative fruite-item">
-                                        <div class="fruite-img">
-                                            <img src="{{ asset('img/'. $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
-                                        </div>
-                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ $product->category->category_name }}</div>
-                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
-                                            <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
-                                            <p class="text-truncate-2-lines">{{ $product->description }}</p>
-                                            <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
-                                                <p class="text-dark fs-5 fw-bold mb-0">{{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}</p>
-                                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng</a>
+                            <div class="tab-content">
+                                <div id="tab-0" class="tab-pane fade show active p-0">
+                                    <div class="row g-4 justify-content-center">
+                                        @foreach ($products as $product)
+                                        <div class="col-md-6 col-lg-6 col-xl-4">
+                                            <div class="rounded position-relative fruite-item">
+                                                <div class="fruite-img">
+                                                    <img src="{{ asset('img/' . $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
+                                                </div>
+                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
+                                                    {{ $product->category->category_name }}
+                                                </div>
+                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
+                                                    <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
+                                                    <p class="text-truncate-2-lines">{{ $product->description }}</p>
+                                                    <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                                        <p class="text-dark fs-5 fw-bold mb-0">
+                                                            {{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}
+                                                        </p>
+                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @foreach ($categories as $category)
+                                <div id="tab-{{ $category->category_id }}" class="tab-pane fade p-0">
+                                    <div class="row g-4 justify-content-center">
+                                        @foreach ($products->where('category_id', $category->category_id) as $product)
+                                        <div class="col-md-6 col-lg-6 col-xl-4">
+                                            <div class="rounded position-relative fruite-item">
+                                                <div class="fruite-img">
+                                                    <img src="{{ asset('img/' . $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
+                                                </div>
+                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
+                                                    {{ $product->category->category_name }}
+                                                </div>
+                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
+                                                    <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
+                                                    <p class="text-truncate-2-lines">{{ $product->description }}</p>
+                                                    <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                                        <p class="text-dark fs-5 fw-bold mb-0">
+                                                            {{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}
+                                                        </p>
+                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 @endforeach
-                                <div class="col-12">
-                                    <div class="pagination d-flex justify-content-center mt-5">
-                                        <a href="#" class="rounded">&laquo;</a>
-                                        <a href="#" class="active rounded">1</a>
-                                        <a href="#" class="rounded">2</a>
-                                        <a href="#" class="rounded">3</a>
-                                        <a href="#" class="rounded">4</a>
-                                        <a href="#" class="rounded">5</a>
-                                        <a href="#" class="rounded">6</a>
-                                        <a href="#" class="rounded">&raquo;</a>
-                                    </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="pagination d-flex justify-content-center mt-5">
+                                    <!-- Previous Page -->
+                                    @if (!$products->onFirstPage())
+                                    <a href="{{ $products->previousPageUrl() }}" class="rounded">&laquo;</a>
+                                    @endif
+                                    <!-- Pagination -->
+                                    <?php
+                                    $currentPage = $products->currentPage();
+                                    $lastPage = $products->lastPage();
+                                    $visiblePages = 3;
+                                    ?>
+                                    @foreach ($products->getUrlRange(1, $lastPage) as $page => $url)
+                                    @if ($page == $currentPage)
+                                    <a href="#" class="active rounded">{{ $page }}</a>
+                                    @elseif ($page <= $visiblePages || $page==$lastPage || ($page>= $currentPage - 2 && $page <= $currentPage + 2))
+                                            <a href="{{ $url }}" class="rounded">{{ $page }}</a>
+                                            @elseif ($page == $currentPage - 3 || $page == $currentPage + 3)
+                                            <a href="" class="rounded">...</a>
+                                            @endif
+                                            @endforeach
+                                            <!-- Next Page -->
+                                            @if ($products->hasMorePages())
+                                            <a href="{{ $products->nextPageUrl() }}" class="rounded">&raquo;</a>
+                                            @endif
                                 </div>
                             </div>
                         </div>

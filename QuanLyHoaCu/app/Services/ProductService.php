@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
@@ -19,7 +18,10 @@ class ProductService
 
     public function getAllProduct()
     {
-        return $this->product->with('category')->orderBy('product_id', 'desc')->get();
+        return $this->product
+            ->with('category')
+            ->orderBy('product_id', 'desc')
+            ->paginate(9);
     }
 
     public function getNewestProduct()
@@ -27,7 +29,7 @@ class ProductService
         return $this->product
             ->with('category')
             ->orderBy('product_id', 'desc')
-            ->take(4)
+            ->take(8)
             ->get();
     }
 
@@ -47,5 +49,10 @@ class ProductService
             ->whereRaw('product_id % 2 != 0')
             ->take(6)
             ->get();
+    }
+
+    public function getProductQuantity()
+    {
+        return $this->product->count();
     }
 }

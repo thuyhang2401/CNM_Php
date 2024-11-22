@@ -72,7 +72,7 @@
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                         <a href="{{ route('cart.list') }}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ $cartQuantity }}</span>
                         </a>
 
                         <div class="nav-item dropdown">
@@ -140,17 +140,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($carts as $cart)
                         <tr>
                             <th scope="row">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ asset('img/khung1.jpg') }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
+                                    <img src="{{ asset('img/'. $cart->product->image) }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
                                 </div>
                             </th>
                             <td>
-                                <p class="mb-0 mt-4">Big Banana</p>
+                                <p class="mb-0 mt-4">{{ $cart->product->product_name }}</p>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mb-0 mt-4">{{ number_format($cart->product->price, 0, '', ',') }} VND</p>
                             </td>
                             <td>
                                 <div class="input-group quantity mt-4" style="width: 100px;">
@@ -159,7 +160,7 @@
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                    <input type="text" class="form-control form-control-sm text-center border-0" value="{{ $cart->quantity }}">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                             <i class="fa fa-plus"></i>
@@ -168,15 +169,15 @@
                                 </div>
                             </td>
                             <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
+                                <p class="mb-0 mt-4">{{ number_format($cart->product->price * $cart->quantity, 0, '', ',') }} VND</p>
                             </td>
                             <td>
                                 <button class="btn btn-md rounded-circle bg-light border mt-4">
                                     <i class="fa fa-times text-danger"></i>
                                 </button>
                             </td>
-
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -196,11 +197,11 @@
                             <h1 class="display-6 mb-4">Hóa đơn</h1>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Tổng tiền:</h5>
-                                <p class="mb-0">96.00 VND</p>
+                                <p class="mb-0">{{ number_format($subTotal, 0, '', ',') }} VND</p>
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Phí vận chuyển</h5>
-                                <p class="mb-0">3.00 VND</p>
+                                <p class="mb-0">13,00 VND</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <h5 class="mb-0 me-4">Giảm giá:</h5>
@@ -209,7 +210,10 @@
                         </div>
                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                             <h5 class="mb-0 ps-4 me-4">Thành tiền</h5>
-                            <p class="mb-0 pe-4">99.00 VND</p>
+                            <?php
+                            $totalPrice = $subTotal + 13000
+                            ?>
+                            <p class="mb-0 pe-4">{{ number_format($totalPrice, 0, '', ',') }} VND</p>
                         </div>
                         <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Đặt hàng</button>
                     </div>
