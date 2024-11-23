@@ -25,6 +25,8 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->primary(['order_id', 'product_id']);
+
+            $table->integer('quatity');
         });
     }
 

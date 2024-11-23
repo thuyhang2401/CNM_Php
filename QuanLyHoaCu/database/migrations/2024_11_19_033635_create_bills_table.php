@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('bill_id');
             $table->integer('tax_code')->nullable();
             $table->string('note')->nullable();
+            $table->bigInteger('total_bill');
 
             $table->unsignedBigInteger('staff_id');
             $table->foreign('staff_id')
