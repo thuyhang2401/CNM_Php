@@ -55,4 +55,25 @@ class ProductService
     {
         return $this->product->count();
     }
+
+    public function getProductById($productId)
+    {
+        return $this->product
+            ->with('category')
+            ->where('product_id', $productId)
+            ->first();
+    }
+
+    public function getRelatedProduct($productId)
+    {
+        $categoryId = $this->product
+            ->find($productId)
+            ->category_id;
+
+        return $this->product
+            ->with('category')
+            ->where('category_id', $categoryId)
+            ->where('product_id', '!=', $productId)
+            ->get();
+    }
 }

@@ -63,10 +63,10 @@
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="{{ route('product.index') }}" class="nav-item nav-link active">Trang chủ</a>
-                        <a href="{{ route('product.shop') }}" class="nav-item nav-link">Sản phẩm</a>
-                        <a href="{{ route('cart.list') }}" class="nav-item nav-link">Giỏ hàng</a>
-                        <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
+                        <a href="{{ route('product.index') }}" class="nav-item nav-link {{ request()->routeIs('product.index') ? 'active' : '' }}">Trang chủ</a>
+                        <a href="{{ route('product.shop') }}" class="nav-item nav-link {{ request()->routeIs('product.shop') ? 'active' : '' }}">Sản phẩm</a>
+                        <a href="{{ route('cart.list') }}" class="nav-item nav-link {{ request()->routeIs('cart.list') ? 'active' : '' }}">Giỏ hàng</a>
+                        <a href="contact.html" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Liên hệ</a>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -127,63 +127,77 @@
     <!-- Cart Page Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Hình ảnh</th>
-                            <th scope="col">Sản phẩm</th>
-                            <th scope="col">Đơn giá</th>
-                            <th scope="col">Số lượng</th>
-                            <th scope="col">Tổng tiền</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($carts as $cart)
-                        <tr>
-                            <th scope="row">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ asset('img/'. $cart->product->image) }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
-                                </div>
-                            </th>
-                            <td>
-                                <p class="mb-0 mt-4">{{ $cart->product->product_name }}</p>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">{{ number_format($cart->product->price, 0, '', ',') }} VND</p>
-                            </td>
-                            <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
+            <!-- Update cart form -->
+            <form action="{{ route('cart.update') }}" method="POST">
+                @method('PUT')
+                @csrf
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Hình ảnh</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Đơn giá</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Tổng tiền</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($carts->isEmpty())
+                            <tr>
+                                <td colspan="6" class="text-center" style="padding: 40px 0;">Chưa có sản phẩm trong giỏ hàng</td>
+                            </tr>
+                            @else
+                            @foreach ($carts as $cart)
+                            <tr>
+                                <th scope="row">
+                                    <input type="hidden" value="{{ $cart->product->product_id }}" name="productIds[]">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('img/'. $cart->product->image) }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0" value="{{ $cart->quantity }}">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
+                                </th>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ $cart->product->product_name }}</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ number_format($cart->product->price, 0, '', ',') }} VND</p>
+                                </td>
+                                <td>
+                                    <div class="input-group quantity mt-4" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" type="button">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" name="quantities[{{ $cart->product->product_id }}]" class="form-control form-control-sm text-center border-0" value="{{ $cart->quantity }}">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">{{ number_format($cart->product->price * $cart->quantity, 0, '', ',') }} VND</p>
-                            </td>
-                            <td>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                    <i class="fa fa-times text-danger"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <div class="mt-5">
-                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Cập nhật giỏ hàng</button>
-            </div>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ number_format($cart->product->price * $cart->quantity, 0, '', ',') }} VND</p>
+                                </td>
+                                <td>
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="deleteCartItem('{{ $cart->product->product_id }}')">
+                                        <i class="fa fa-times text-danger"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-5">
+                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="submit">Cập nhật giỏ hàng</button>
+                </div>
+            </form>
+            <!-- End Update cart form -->
+
             <div class="mt-5">
                 <h5 class="mb-0 me-4">Giảm giá:</h5>
                 <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Nhập mã giảm giá">
@@ -317,6 +331,24 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
+
+    <script>
+        function deleteCartItem(productId) {
+            fetch('{{ route("cart.delete", ":product_id") }}'.replace(':product_id', productId), {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                });
+        }
+    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

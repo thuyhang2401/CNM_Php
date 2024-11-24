@@ -10,6 +10,8 @@ class Account extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $primaryKey = 'account_id';
+
     protected $fillable = [
         'username',
         'password',

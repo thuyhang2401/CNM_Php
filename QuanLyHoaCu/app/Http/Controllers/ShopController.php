@@ -37,7 +37,9 @@ class ShopController extends Controller
         $newestProducts = $this->productService->getNewestProduct();
         $bestSellerProducts = $this->productService->getBestSellerProduct();
 
-        return view('index', array_merge($getDuplicateData, [
+        return view(
+            'index',
+            array_merge($getDuplicateData, [
                 'newestProducts' => $newestProducts,
                 'bestSellerProducts' => $bestSellerProducts,
             ])
@@ -56,10 +58,15 @@ class ShopController extends Controller
         ]));
     }
 
-    public function shopDetail()
+    public function shopDetail($productId)
     {
         $getDuplicateData = $this->getDuplicateData();
+        $product = $this->productService->getProductById($productId);
+        $products = $this->productService->getRelatedProduct($productId);
 
-        return view('shop-detail', $getDuplicateData);
+        return view('shop-detail', array_merge($getDuplicateData, [
+            'product' => $product,
+            'products' => $products,
+        ]));
     }
 }
