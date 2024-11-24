@@ -63,10 +63,10 @@
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="{{ route('product.index') }}" class="nav-item nav-link active">Trang chủ</a>
-                        <a href="{{ route('product.shop') }}" class="nav-item nav-link">Sản phẩm</a>
-                        <a href="{{ route('cart.list') }}" class="nav-item nav-link">Giỏ hàng</a>
-                        <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
+                        <a href="{{ route('product.index') }}" class="nav-item nav-link {{ request()->routeIs('product.index') ? 'active' : '' }}">Trang chủ</a>
+                        <a href="{{ route('product.shop') }}" class="nav-item nav-link {{ request()->routeIs('product.shop') ? 'active' : '' }}">Sản phẩm</a>
+                        <a href="{{ route('cart.list') }}" class="nav-item nav-link {{ request()->routeIs('cart.list') ? 'active' : '' }}">Giỏ hàng</a>
+                        <a href="contact.html" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Liên hệ</a>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -185,7 +185,9 @@
                                     @foreach ($featuredProducts as $product)
                                     <div class="d-flex align-items-center justify-content-start">
                                         <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                            <img src="{{ asset('img/'. $product->image) }}" class="rounded" style="width: 100px; height: 100px;" alt="">
+                                            <a href="{{ route('product.shopDetail', $product->product_id) }}">
+                                                <img src="{{ asset('img/'. $product->image) }}" class="rounded" style="width: 100px; height: 100px;" alt="">
+                                            </a>
                                         </div>
                                         <div>
                                             <h6 class="mb-2">{{ $product->product_name }}</h6>
@@ -211,26 +213,33 @@
                                     <div class="row g-4 justify-content-center">
                                         @foreach ($products as $product)
                                         <div class="col-md-6 col-lg-6 col-xl-4">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{{ asset('img/' . $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
-                                                    {{ $product->category->category_name }}
-                                                </div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
-                                                    <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
-                                                    <p class="text-truncate-2-lines">{{ $product->description }}</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">
-                                                            {{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}
-                                                        </p>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
-                                                        </a>
+                                            <form action="{{ route('cart.add') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="productId" value="{{ $product->product_id }}">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <a href="{{ route('product.shopDetail', $product->product_id) }}">
+                                                    <div class="rounded position-relative fruite-item">
+                                                        <div class="fruite-img">
+                                                            <img src="{{ asset('img/' . $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
+                                                        </div>
+                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
+                                                            {{ $product->category->category_name }}
+                                                        </div>
+                                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
+                                                            <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
+                                                            <p class="text-truncate-2-lines">{{ $product->description }}</p>
+                                                            <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                                                <p class="text-dark fs-5 fw-bold mb-0">
+                                                                    {{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}
+                                                                </p>
+                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </a>
+                                            </form>
                                         </div>
                                         @endforeach
                                     </div>
@@ -240,26 +249,33 @@
                                     <div class="row g-4 justify-content-center">
                                         @foreach ($products->where('category_id', $category->category_id) as $product)
                                         <div class="col-md-6 col-lg-6 col-xl-4">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src="{{ asset('img/' . $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
-                                                    {{ $product->category->category_name }}
-                                                </div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
-                                                    <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
-                                                    <p class="text-truncate-2-lines">{{ $product->description }}</p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">
-                                                            {{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}
-                                                        </p>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
-                                                        </a>
+                                            <form action="{{ route('cart.add') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="productId" value="{{ $product->product_id }}">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <a href="{{ route('product.shopDetail', $product->product_id) }}">
+                                                    <div class="rounded position-relative fruite-item">
+                                                        <div class="fruite-img">
+                                                            <img src="{{ asset('img/' . $product->image) }}" class="img-fluid w-100 h-product rounded-top" alt="">
+                                                        </div>
+                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
+                                                            {{ $product->category->category_name }}
+                                                        </div>
+                                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom bottom-height">
+                                                            <h4 class="text-truncate-2-lines">{{ $product->product_name }}</h4>
+                                                            <p class="text-truncate-2-lines">{{ $product->description }}</p>
+                                                            <div class="d-flex justify-content-between flex-lg-wrap mt-auto">
+                                                                <p class="text-dark fs-5 fw-bold mb-0">
+                                                                    {{ number_format($product->price, 0, '', ',') }} VND / {{ $product->unit }}
+                                                                </p>
+                                                                <button type="submit" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Thêm vào giỏ hàng
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </a>
+                                            </form>
                                         </div>
                                         @endforeach
                                     </div>

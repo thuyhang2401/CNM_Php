@@ -15,6 +15,8 @@ class Cart extends Model
         'quantity'
     ];
 
+    public $timestamps = false;
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'product_id');

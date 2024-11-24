@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CartService;
+use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
@@ -33,5 +34,36 @@ class CartController extends Controller
                 'subTotal' => $subTotal
             ]
         );
+    }
+
+    public function addToCart(Request $request)
+    {
+        $productId = $request->input('productId');
+        $quantity = $request->input('quantity');
+
+        $this->cartService->addProductToCart($productId, $quantity);
+
+        return redirect()->route('cart.list');
+    }
+
+    public function updateCart(Request $request)
+    {
+        $productIds = $request->input('productIds');
+        $quantities = $request->input('quantities');
+
+        foreach ($productIds as $productId) {
+            $quantity = $quantities[$productId];
+
+            $this->cartService->updateQuantityInCart($productId, $quantity);
+        }
+
+        return redirect()->route('cart.list');
+    }
+
+    public function deleteCart($productId)
+    {
+        $this->cartService->deleteProductInCart($productId);
+
+        return response()->json(['redirect' => route('cart.list')]);
     }
 }
