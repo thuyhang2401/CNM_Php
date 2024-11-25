@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Staff extends Model
 {
     use HasFactory;
-
-    protected $table = 'customers';
-    protected $primaryKey = 'customer_id';
+    protected $table = 'staffs';
+    protected $primaryKey = 'staff_id';
     public $timestamps = false;
     protected $fillable = [
         'fullname',
@@ -19,11 +18,11 @@ class Customer extends Model
         'phone_number',
         'address',
         'avatar',
+        'salary',
         'account_id'
     ];
-
-    public function orders()
+    public function account()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Account::class, 'account_id', 'account_id');
     }
 }

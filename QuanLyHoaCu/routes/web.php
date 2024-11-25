@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\ProductController;
+
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,7 +22,11 @@ Route::middleware(['web'])->group(function () {
 
     // quản lý đơn hàng
     Route::resource('staff/orders', OrderController::class);
+    Route::resource('staff/orders/reject', OrderController::class);
+    Route::post('staff/orders/reject/{id}', [OrderController::class, 'reject']);
+    Route::post('staff/orders/confirm/{id}', [OrderController::class, 'confirm']);
 
     // Thay đổi profile
-    //Route::get('/staff/profile', [::class, 'export']);
+    Route::resource('staff/profile', StaffController::class);
+
 });
