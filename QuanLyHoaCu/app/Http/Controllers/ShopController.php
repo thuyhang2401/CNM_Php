@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProductService;
+use App\Services\ShopService;
 use App\Services\CategoryService;
 use App\Services\CartService;
+use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
-    protected $productService;
+    protected $shopService;
     protected $categoryService;
     protected $cartService;
 
     public function __construct(
-        ProductService $productService,
+        ShopService $shopService,
         CategoryService $categoryService,
         CartService $cartService
     ) {
-        $this->productService = $productService;
+        $this->shopService = $shopService;
         $this->categoryService = $categoryService;
         $this->cartService = $cartService;
     }
@@ -25,7 +26,7 @@ class ShopController extends Controller
     private function getDuplicateData()
     {
         return [
-            'featuredProducts' => $this->productService->getFeaturedProduct(),
+            'featuredProducts' => $this->shopService->getFeaturedProduct(),
             'categories' => $this->categoryService->getAllCategory(),
             'cartQuantity' => $this->cartService->getCartQuantity(),
         ];
@@ -34,8 +35,8 @@ class ShopController extends Controller
     public function index()
     {
         $getDuplicateData = $this->getDuplicateData();
-        $newestProducts = $this->productService->getNewestProduct();
-        $bestSellerProducts = $this->productService->getBestSellerProduct();
+        $newestProducts = $this->shopService->getNewestProduct();
+        $bestSellerProducts = $this->shopService->getBestSellerProduct();
 
         return view(
             'index',
@@ -46,23 +47,32 @@ class ShopController extends Controller
         );
     }
 
-    public function shop()
+    public function shop(Request $request)
     {
+
         $getDuplicateData = $this->getDuplicateData();
-        $products = $this->productService->getAllProduct();
-        $shopQuantity = $this->productService->getProductQuantity();
+        $shopQuantity = $this->shopService->getProductQuantity();
+
+        $keyword = $request->input('searchString');
+        $products = $this->shopService->getAllProduct($keyword);
+
+        $productsByCategory = [];
+        foreach ($getDuplicateData['categories'] as $category) {
+            $productsByCategory[$category->category_id] = $this->shopService->getProductsByCategory($category->category_id);
+        }
 
         return view('shop', array_merge($getDuplicateData, [
             'products' => $products,
             'shopQuantity' => $shopQuantity,
+            'productsByCategory' => $productsByCategory,
         ]));
     }
 
     public function shopDetail($productId)
     {
         $getDuplicateData = $this->getDuplicateData();
-        $product = $this->productService->getProductById($productId);
-        $products = $this->productService->getRelatedProduct($productId);
+        $product = $this->shopService->getProductById($productId);
+        $products = $this->shopService->getRelatedProduct($productId);
 
         return view('shop-detail', array_merge($getDuplicateData, [
             'product' => $product,

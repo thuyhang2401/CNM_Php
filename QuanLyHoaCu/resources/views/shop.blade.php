@@ -63,10 +63,10 @@
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="{{ route('product.index') }}" class="nav-item nav-link {{ request()->routeIs('product.index') ? 'active' : '' }}">Trang chủ</a>
-                        <a href="{{ route('product.shop') }}" class="nav-item nav-link {{ request()->routeIs('product.shop') ? 'active' : '' }}">Sản phẩm</a>
-                        <a href="{{ route('cart.list') }}" class="nav-item nav-link {{ request()->routeIs('cart.list') ? 'active' : '' }}">Giỏ hàng</a>
-                        <a href="contact.html" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Liên hệ</a>
+                        <a href="{{ route('product.index') }}" class="nav-item nav-link">Trang chủ</a>
+                        <a href="{{ route('product.shop') }}" class="nav-item nav-link active">Sản phẩm</a>
+                        <a href="{{ route('cart.list') }}" class="nav-item nav-link">Giỏ hàng</a>
+                        <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -80,7 +80,7 @@
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <a href="#" class="dropdown-item">Tài khoản của tôi</a>
+                                <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
                                 <a href="#" class="dropdown-item">Đơn hàng</a>
                                 <a href="#" class="dropdown-item">Đăng xuất</a>
                             </div>
@@ -102,10 +102,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex align-items-center">
-                    <div class="input-group w-75 mx-auto d-flex">
-                        <input type="search" class="form-control p-3" placeholder="Nhập để tìm kiếm" aria-describedby="search-icon-1">
-                        <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                    </div>
+                    <form action="{{ route('product.shop') }}" method="GET" class="modal-body d-flex">
+                        <div class="input-group w-75 mx-auto d-flex">
+                            <input type="search" id="searchString" name="searchString" class="form-control p-3" placeholder="Nhập để tìm kiếm" aria-describedby="search-icon-1">
+                            <button type="submit" id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -132,10 +134,12 @@
                 <div class="col-lg-12">
                     <div class="row g-4">
                         <div class="col-xl-3">
-                            <div class="input-group w-100 mx-auto d-flex">
-                                <input type="search" class="form-control p-3" placeholder="Nhập từ khóa" aria-describedby="search-icon-1">
-                                <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                            </div>
+                            <form action="{{ route('product.shop') }}" method="GET">
+                                <div class="input-group w-100 mx-auto d-flex">
+                                    <input type="search" id="searchString" name="searchString" class="form-control p-3" placeholder="Nhập từ khóa" aria-describedby="search-icon-1">
+                                    <button type="submit" id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></button>
+                                </div>
+                            </form>
                         </div>
                         <div class="col-6"></div>
                         <div class="col-xl-3">
@@ -247,7 +251,7 @@
                                 @foreach ($categories as $category)
                                 <div id="tab-{{ $category->category_id }}" class="tab-pane fade p-0">
                                     <div class="row g-4 justify-content-center">
-                                        @foreach ($products->where('category_id', $category->category_id) as $product)
+                                        @foreach ($productsByCategory[$category->category_id] as $product)
                                         <div class="col-md-6 col-lg-6 col-xl-4">
                                             <form action="{{ route('cart.add') }}" method="POST">
                                                 @csrf

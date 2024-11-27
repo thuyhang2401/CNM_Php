@@ -65,7 +65,7 @@
                     <div class="navbar-nav mx-auto">
                         <a href="{{ route('product.index') }}" class="nav-item nav-link">Trang chủ</a>
                         <a href="{{ route('product.shop') }}" class="nav-item nav-link">Sản phẩm</a>
-                        <a href="{{ route('cart.list') }}" class="nav-item nav-link active">Giỏ hàng</a>
+                        <a href="{{ route('cart.list') }}" class="nav-item nav-link">Giỏ hàng</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
                     <div class="d-flex m-3 me-0">
@@ -117,131 +117,107 @@
 
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Giỏ hàng</h1>
+        <h1 class="text-center text-white display-6">Thông tin cá nhân</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             <li class="breadcrumb-item"><a href="{{ route('product.index') }}">Trang chủ</a></li>
-            <li class="breadcrumb-item active text-white">Giỏ hàng</li>
+            <li class="breadcrumb-item active text-white">Thông tin cá nhân</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
 
 
-    <!-- Cart Page Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <!-- Update cart form -->
-            <form action="{{ route('cart.update') }}" method="POST">
-                @method('PUT')
-                @csrf
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Hình ảnh</th>
-                                <th scope="col">Sản phẩm</th>
-                                <th scope="col">Đơn giá</th>
-                                <th scope="col">Số lượng</th>
-                                <th scope="col">Tổng tiền</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($carts->isEmpty())
-                            <tr>
-                                <td colspan="6" class="text-center" style="padding: 40px 0;">Chưa có sản phẩm trong giỏ hàng</td>
-                            </tr>
-                            @else
-                            @foreach ($carts as $cart)
-                            <tr>
-                                <th scope="row">
-                                    <input type="hidden" value="{{ $cart->product->product_id }}" name="productIds[]">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ asset('img/'. $cart->product->image) }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
-                                    </div>
-                                </th>
-                                <td>
-                                    <p class="mb-0 mt-4">{{ $cart->product->product_name }}</p>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">{{ number_format($cart->product->price, 0, '', ',') }} VND</p>
-                                </td>
-                                <td>
-                                    <div class="input-group quantity mt-4" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" type="button">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" name="quantities[{{ $cart->product->product_id }}]" class="form-control form-control-sm text-center border-0" value="{{ $cart->quantity }}">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">{{ number_format($cart->product->price * $cart->quantity, 0, '', ',') }} VND</p>
-                                </td>
-                                <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="deleteCartItem('{{ $cart->product->product_id }}')">
-                                        <i class="fa fa-times text-danger"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-5">
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="submit">Cập nhật giỏ hàng</button>
-                </div>
-            </form>
-            <!-- End Update cart form -->
-
-            <div class="mt-5">
-                <h5 class="mb-0 me-4">Giảm giá:</h5>
-                <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Nhập mã giảm giá">
-                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Áp dụng mã giảm giá</button>
+    <!-- Profile -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <h5>Tài Khoản Của Tôi</h5>
+                <a href="{{ route('customer.profile') }}" class="active">Hồ Sơ</a>
+                <a href="{{ route('customer.password') }}">Đổi Mật Khẩu</a>
             </div>
-            <div class="row g-4 justify-content-end">
-                <div class="col-8"></div>
-                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                    <div class="bg-light rounded">
-                        <div class="p-4">
-                            <h1 class="display-6 mb-4">Hóa đơn</h1>
-                            <div class="d-flex justify-content-between mb-4">
-                                <h5 class="mb-0 me-4">Tổng tiền:</h5>
-                                <p class="mb-0">{{ number_format($subTotal, 0, '', ',') }} VND</p>
+            <!-- Profile Section -->
+            <div class="col-md-9 profile-container">
+                <h2>Hồ Sơ Của Tôi</h2>
+                <form action="{{ route('customer.updateProfile') }}" method="POST" enctype="multipart/form-data">
+                    @method('PUT')
+                    @csrf
+                    <div class="row">
+                        <!-- Left Side -->
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Tên đăng nhập</label>
+                                <input type="text" class="form-control" id="username" value="{{ $profile->account->username }}" readonly>
                             </div>
-                            <div class="d-flex justify-content-between mb-4">
-                                <h5 class="mb-0 me-4">Phí vận chuyển</h5>
-                                <p class="mb-0">13,00 VND</p>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Thêm họ tên" value="{{ $profile->fullname }}">
+                                @error('fullname')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <h5 class="mb-0 me-4">Giảm giá:</h5>
-                                <p class="mb-0">0 VND</p>
+                            <div class="mb-3">
+                                <label for="dob" class="form-label">Ngày sinh</label>
+                                <input type="date" class="form-control" id="dob" name="dob" value="{{ $profile->dob}}">
+                                @error('dob')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Giới tính</label>
+                                <div>
+                                    <input type="radio" id="gender-male" name="gender" value="M"
+                                        {{ $profile->gender == 'M' ? 'checked' : '' }}>
+                                    <label for="gender-male">Nam</label>
+                                    <input type="radio" style="margin-left: 20px;" id="gender-female" name="gender" value="F"
+                                        {{ $profile->gender == 'F' ? 'checked' : '' }}>
+                                    <label for="gender-female">Nữ</label>
+                                </div>
+                                @error('gender')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Thêm số điện thoại" value="{{ $profile->phone_number }}">
+                                @error('phone_number')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ $profile->account->email }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ</label>
+                                <input type="text " class="form-control" id="address" name="address" placeholder="Thêm địa chỉ" value="{{ $profile->address}}">
+                                @error('address')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
-                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                            <h5 class="mb-0 ps-4 me-4">Thành tiền</h5>
-                            <?php
-                            $totalPrice = $subTotal + 13000
-                            ?>
-                            <p class="mb-0 pe-4">{{ number_format($totalPrice, 0, '', ',') }} VND</p>
+                        <!-- Right Side -->
+                        <div class="col-md-4 text-center">
+                            <img src="{{ asset('img/'. $profile->avatar) }}" class="profile-image">
+                            <div class="mt-3">
+                                <label for="file-input" class="btn border border-secondary rounded-pill text-primary">Chọn Ảnh</label>
+                                <input type="file" id="file-input" class="custom-file-input" name="avatar">
+                                <span id="file-name" class="file-name"></span>
+                                <p class="text-muted mt-2">Dụng lượng file tối đa 5 MB. Định dạng: .JPEG, .PNG</p>
+                            </div>
+                            @error('dob')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Đặt hàng</button>
                     </div>
-                </div>
+                    <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 text-primary mt-4">Lưu</button>
+                </form>
             </div>
         </div>
     </div>
-    <!-- Cart Page End -->
 
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+    <div class="container-fluid bg-dark text-white-50 footer pt-5">
         <div class="container py-5">
             <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
                 <div class="row g-4">
@@ -335,22 +311,28 @@
 
 
     <script>
-        function deleteCartItem(productId) {
-            fetch('{{ route("cart.delete", ":product_id") }}'.replace(':product_id', productId), {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.redirect) {
-                        window.location.href = data.redirect;
-                    }
-                });
-        }
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileInput.addEventListener('change', function() {
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'No file chosen';
+            fileNameDisplay.textContent = fileName;
+        });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Cập nhật thành công',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+    @endif
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
