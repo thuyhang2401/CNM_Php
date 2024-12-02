@@ -1,0 +1,99 @@
+﻿
+
+<?php $__env->startSection('content'); ?>
+<section class="is-title-bar">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+        <ul>
+            <li>Quản trị viên</li>
+            <li>Thống kê</li>
+        </ul>
+    </div>
+</section>
+
+<section class="is-hero-bar">
+    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+        <h1 class="title">
+            Thống kê
+        </h1>
+    </div>
+</section>
+
+<section class="section main-section">
+    <div class="grid gap-6 grid-cols-1 md:grid-cols-3 mb-6">
+        <div class="card">
+            <div class="card-content">
+                <div class="flex items-center justify-between">
+                    <div class="widget-label">
+                        <h3>
+                            Người dùng
+                        </h3>
+                        <h1>
+                            512
+                        </h1>
+                    </div>
+                    <span class="icon widget-icon text-green-500"><i class="mdi mdi-account-multiple mdi-48px"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="flex items-center justify-between">
+                    <div class="widget-label">
+                        <h3>
+                            Tổng thu nhập trong tháng
+                        </h3>
+                        <h1>
+                            70,770 tr.đ
+                        </h1>
+                    </div>
+                    <span class="icon widget-icon text-blue-500"><i class="mdi mdi-cart-outline mdi-48px"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="flex items-center justify-between">
+                    <div class="widget-label">
+                        <h3>
+                            Tỉ lệ hàng bán
+                        </h3>
+                        <h1>
+                            70%
+                        </h1>
+                    </div>
+                    <span class="icon widget-icon text-red-500"><i class="mdi mdi-finance mdi-48px"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-6">
+        <header class="card-header">
+            <p class="card-header-title">
+                <span class="icon"><i class="mdi mdi-finance"></i></span>
+                Biểu đồ thể hiện hiệu suất hàng tồn kho - nhập vào - bán ra
+            </p>
+            <a href="#" class="card-header-icon">
+                <span class="icon"><i class="mdi mdi-reload"></i></span>
+            </a>
+        </header>
+        <div class="card-content">
+            <div class="chart-area">
+                <div class="h-full">
+                    <div class="chartjs-size-monitor">
+                        <div class="chartjs-size-monitor-expand">
+                            <div></div>
+                        </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div></div>
+                        </div>
+                    </div>
+                    <canvas id="big-line-chart" width="2992" height="1000" class="chartjs-render-monitor block" style="height: 400px; width: 1197px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Baitap\DoAn_CongNgheMoi\QuanLyHoaCu\resources\views/admin/index.blade.php ENDPATH**/ ?>
