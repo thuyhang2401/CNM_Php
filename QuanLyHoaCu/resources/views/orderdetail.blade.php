@@ -252,12 +252,12 @@
                     </p>
                     <p class="text-end">
                       Tổng tiền:
-                      <strong class="order-total-fee" style="font-size: 40px">{{ number_format($product->product->price * $product->quantity + $order->delivery_fee, 0, '', ',') }} VNĐ</strong>
+                      <strong class="order-total-fee" style="font-size: 40px">{{ number_format($total_money + $order->delivery_fee, 0, '', ',') }} VNĐ</strong>
                     </p>
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <a href="{{ route('orders.index') }}" class="btn btn-secondary">Đóng</a>
+                  <a href="{{ route('orderscus.index') }}" class="btn btn-secondary">Đóng</a>
                 </div>
               </div>
             </div>

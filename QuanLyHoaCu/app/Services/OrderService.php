@@ -32,6 +32,8 @@ class OrderService
                 'o.phone_number as phone_number',
                 'o.delivery_fee as delivery_fee',
                 'o.note as note',
+                'o.payment as payment',
+                'o.payment_at as payment_at',
                 DB::raw('(SUM(p.price * odd.quantity) + o.delivery_fee) as total_price')
             )
             ->groupBy(

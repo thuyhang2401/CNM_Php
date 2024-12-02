@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\CartService;
 use App\Services\OrderCustomerService;
 use App\Services\OrderDetailService;
-use Illuminate\Http\Request;
 
 class OrderCustomerController extends Controller
 {
@@ -48,8 +47,13 @@ class OrderCustomerController extends Controller
         $order = $this->orderService->getOrderById($orderId);
         $products = $this->orderDetailService->getList($orderId);
         $cartQuantity = $this->cartService->getCartQuantity();
+        $total_money = 0;
 
-        return view('orderdetail', compact('order', 'products', 'cartQuantity'));
+        foreach ($products as $product) {
+            $total_money += $product->quantity * $product->product->price;
+        }
+
+        return view('orderdetail', compact('order', 'products', 'cartQuantity', 'total_money'));
     }
 
     public function rejectOrder($orderId) {

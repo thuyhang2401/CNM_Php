@@ -26,8 +26,6 @@ return new class extends Migration
 
             $table->integer('quantity');
             $table->primary(['order_id', 'product_id']);
-
-            $table->integer('quantity');
         });
     }
 
