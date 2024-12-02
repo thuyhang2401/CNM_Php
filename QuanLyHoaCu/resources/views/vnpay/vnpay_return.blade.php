@@ -56,7 +56,7 @@
                     <label><span style='color:blue'>GD Thanh cong</span></label>
                 </div> 
             </div>
-            <a href="{{route('orders.index')}}"><button>Quay lại</button></a>
+            <a href="{{route('orderscus.index')}}"><button>Quay lại</button></a>
             <p>
                 &nbsp;
             </p>

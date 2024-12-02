@@ -35,8 +35,8 @@ Route::prefix('QuanLyHoaCu')->group(function () {
     Route::get('/checkout/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('checkout.vnpay_return');
 
     // order
-    Route::get('/orders', [OrderCustomerController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{orderId}', [OrderCustomerController::class, 'show'])->name('orders.show');
+    Route::get('/orders', [OrderCustomerController::class, 'index'])->name('orderscus.index');
+    Route::get('/orders/{orderId}', [OrderCustomerController::class, 'show'])->name('orderscus.show');
 
     // edit customer profile
     Route::get('customer/profile', [CustomerController::class, 'showProfile'])->name('customer.profile');
