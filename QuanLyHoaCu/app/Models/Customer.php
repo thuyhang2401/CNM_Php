@@ -21,6 +21,11 @@ class Customer extends Model
         'avatar',
         'account_id'
     ];
+    
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'account_id', 'account_id');
+    }
 
     public function orders()
     {
