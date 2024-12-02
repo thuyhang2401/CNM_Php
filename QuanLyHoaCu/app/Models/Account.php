@@ -22,8 +22,6 @@ class Account extends Authenticatable
         'role_id'
     ];   
 
-    public $timestamps = false;
-
     protected $hidden = [
         'password',
         'remember_token',
