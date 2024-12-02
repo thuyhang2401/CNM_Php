@@ -24,6 +24,14 @@ class CartService
             ->get();
     }
 
+    public function getListCartSelected($selectedCartIds)
+    {
+        return $this->cart
+            ->where('customer_id', $this->customerId)
+            ->whereIn('product_id', $selectedCartIds)
+            ->get();
+    }
+
     public function getCartQuantity()
     {
         return $this->cart

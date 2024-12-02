@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Services\CartService;
+
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class CartController extends Controller
 {
@@ -19,19 +22,11 @@ class CartController extends Controller
         $carts = $this->cartService->getListCart();
         $cartQuantity = $this->cartService->getCartQuantity();
 
-        $subTotal = 0;
-        foreach ($carts as $cart) {
-            if ($cart->product) {
-                $subTotal += $cart->quantity * $cart->product->price;
-            }
-        }
-
         return view(
             'cart',
             [
                 'carts' => $carts,
-                'cartQuantity' => $cartQuantity,
-                'subTotal' => $subTotal
+                'cartQuantity' => $cartQuantity
             ]
         );
     }
@@ -65,5 +60,24 @@ class CartController extends Controller
         $this->cartService->deleteProductInCart($productId);
 
         return response()->json(['redirect' => route('cart.list')]);
+    }
+
+    public function getSelectedProduct(Request $request)
+    {
+        $selectedCartIds = $request->input('selectedIds');
+
+        if (empty($selectedCartIds)) {
+            return redirect()->back()->with('error', 'Vui lòng chọn ít nhất một sản phẩm.');
+        }
+
+        $selectedCartIds = array_map('intval', explode(',', $selectedCartIds));
+
+        // Lấy các object Cart từ database
+        $selectedCarts = $this->cartService->getListCartSelected($selectedCartIds);
+
+        session(['selectedCarts' => $selectedCarts]);
+
+        //return View('checkout', compact('cartQuantity', 'selectedCarts'));
+        return redirect()->route('checkout.index');
     }
 }

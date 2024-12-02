@@ -83,11 +83,11 @@
                             placeholder="Nhập địa chỉ" value="{{$staff->address}}">
                     </div>
                     <div class="mt-3 d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary mr-3" data-bs-dismiss="modal"
-                            onclick="window.location.href='{{url('staff/products')}}'">Đóng</button>
-                        <button type="button" class="btn btn-primary mr-3" data-bs-dismiss="modal">Thay đổi mật
+                        <button type="button" class="btn btn-secondary mr-3"
+                            onclick="window.location.href='{{ url('staff/products') }}'">Đóng</button>
+                        <button type="button" class="btn btn-warning mr-3" data-bs-dismiss="modal">Thay đổi mật
                             khẩu</button>
-                        <button type="submit" class="btn btn-success">Lưu</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>

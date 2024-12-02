@@ -41,7 +41,7 @@
                         <img src="{{ asset('staff/assets/images/users/profile-pic.jpg')}}" alt="user" class="rounded-circle"
                             width="40">
                         <span class="ml-2 d-none d-lg-inline-block"><span>Xin chào,</span> <span
-                                class="text-dark">Hồng Thúy</span> <i data-feather="chevron-down"
+                                class="text-primary">Hồng Thúy</span> <i data-feather="chevron-down"
                                 class="svg-icon"></i></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">

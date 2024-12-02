@@ -41,7 +41,7 @@
   --cyan: #01caf1;
   --white: #fff;
   --gray: #6c757d;
-  --primary: #5f76e8;
+  --primary: #81C408;
   --secondary: #6c757d;
   --success: #22ca80;
   --info: #5f76e8;
@@ -156,11 +156,11 @@ sup {
   top: -.5em; }
 
 a {
-  color: #5f76e8;
+  color: #81C408;
   text-decoration: none;
   background-color: transparent; }
   a:hover {
-    color: #1f3fdb;
+    color: #81C408;
     text-decoration: none; }
 
 a:not([href]):not([tabindex]) {
@@ -5705,7 +5705,9 @@ button.bg-purple:focus {
 
 .shadow-none {
   box-shadow: none !important; }
-
+.w-10 {
+    width: 10% !important
+}
 .w-25 {
   width: 25% !important; }
 

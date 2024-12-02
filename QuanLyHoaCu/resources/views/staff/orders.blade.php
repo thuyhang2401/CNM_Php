@@ -32,10 +32,7 @@
 
                 <div class="tab-content">
                     <div id="wait-confirm" class="tab-pane fade show active">
-                        <div class="card border border-primary">
-                            <div class="card-body">
-                                <h4 class="card-title">Danh sách đơn hàng</h4>
-                            </div>
+                        <div class="card p-3">
                             <table class="table table-sm table-striped mb-0">
                                 <thead>
                                     <tr>
@@ -50,7 +47,7 @@
                                 <tbody>
                                     @foreach ($waitConfirm as $item)
                                         <tr>
-                                            <th scope="row">{{$item->order_id}}</th>
+                                            <th scope="row" class="px-5">{{$item->order_id}}</th>
                                             <td>{{$item->created_at}}</td>
                                             <td>
                                                 <p class="m-0 p-0">{{$item->customer_name}}</p>
@@ -62,7 +59,7 @@
                                             <td>{{$item->status}}</td>
                                             <td>{{$item->total_price}}</td>
                                             <td><a href="/staff/orders/{{$item->order_id}}" class="text-primary"><small>Xem
-                                                        chi tiết<i class="icon-arrow-right"></i></small></a></td>
+                                                        chi tiết <i class="icon-arrow-right"></i></small></a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -70,10 +67,7 @@
                         </div>
                     </div>
                     <div id="confirmed" class="tab-pane fade">
-                        <div class="card border border-primary">
-                            <div class="card-body">
-                                <h4 class="card-title">Danh sách đơn hàng</h4>
-                            </div>
+                        <div class="card p-3">
                             <table class="table table-sm table-striped mb-0">
                                 <thead>
                                     <tr>
@@ -88,7 +82,7 @@
                                 <tbody>
                                     @foreach ($confirmed as $item)
                                         <tr>
-                                            <th scope="row">{{$item->order_id}}</th>
+                                            <th scope="row" class="px-5">{{$item->order_id}}</th>
                                             <td>{{$item->created_at}}</td>
                                             <td>
                                                 <p class="m-0 p-0">{{$item->customer_name}}</p>
@@ -108,10 +102,7 @@
                         </div>
                     </div>
                     <div id="delivering" class="tab-pane fade">
-                        <div class="card border border-primary">
-                            <div class="card-body">
-                                <h4 class="card-title">Danh sách đơn hàng</h4>
-                            </div>
+                        <div class="card p-3">
                             <table class="table table-sm table-striped mb-0">
                                 <thead>
                                     <tr>
@@ -126,7 +117,7 @@
                                 <tbody>
                                     @foreach ($delivering as $item)
                                         <tr>
-                                            <th scope="row">{{$item->order_id}}</th>
+                                            <th scope="row" class="px-5">{{$item->order_id}}</th>
                                             <td>{{$item->created_at}}</td>
                                             <td>
                                                 <p class="m-0 p-0">{{$item->customer_name}}</p>
@@ -146,10 +137,7 @@
                         </div>
                     </div>
                     <div id="delivered" class="tab-pane fade">
-                        <div class="card border border-primary">
-                            <div class="card-body">
-                                <h4 class="card-title">Danh sách đơn hàng</h4>
-                            </div>
+                        <div class="card p-3">
                             <table class="table table-sm table-striped mb-0">
                                 <thead>
                                     <tr>
@@ -164,7 +152,7 @@
                                 <tbody>
                                     @foreach ($delivered as $item)
                                         <tr>
-                                            <th scope="row">{{$item->order_id}}</th>
+                                            <th scope="row" class="px-5">{{$item->order_id}}</th>
                                             <td>{{$item->created_at}}</td>
                                             <td>
                                                 <p class="m-0 p-0">{{$item->customer_name}}</p>
@@ -184,10 +172,7 @@
                         </div>
                     </div>
                     <div id="canceled" class="tab-pane fade">
-                        <div class="card border border-primary">
-                            <div class="card-body">
-                                <h4 class="card-title">Danh sách đơn hàng</h4>
-                            </div>
+                        <div class="card p-3">
                             <table class="table table-sm table-striped mb-0">
                                 <thead>
                                     <tr>
@@ -202,7 +187,7 @@
                                 <tbody>
                                     @foreach ($rejected as $item)
                                         <tr>
-                                            <th scope="row">{{$item->order_id}}</th>
+                                            <th scope="row" class="px-5">{{$item->order_id}}</th>
                                             <td>{{$item->created_at}}</td>
                                             <td>
                                                 <p class="m-0 p-0">{{$item->customer_name}}</p>

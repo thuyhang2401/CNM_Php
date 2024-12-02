@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\Models\Product;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class ProductService
 {

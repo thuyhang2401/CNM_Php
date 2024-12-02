@@ -81,7 +81,7 @@
                             </a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
-                                <a href="#" class="dropdown-item">Đơn hàng</a>
+                                <a href="{{ route('orderscus.index') }}" class="dropdown-item">Đơn hàng</a>
                                 <a href="#" class="dropdown-item">Đăng xuất</a>
                             </div>
                         </div>
@@ -137,6 +137,11 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="select-all" type="checkbox">
+                                    </div>
+                                </th>
                                 <th scope="col">Hình ảnh</th>
                                 <th scope="col">Sản phẩm</th>
                                 <th scope="col">Đơn giá</th>
@@ -153,6 +158,11 @@
                             @else
                             @foreach ($carts as $cart)
                             <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input select-item" type="checkbox" value="{{ $cart->product->product_id }}" data-price="{{ $cart->product->price }}" data-amount="{{ $cart->quantity }}" name="selectedCarts[]">
+                                    </div>
+                                </td>
                                 <th scope="row">
                                     <input type="hidden" value="{{ $cart->product->product_id }}" name="productIds[]">
                                     <div class="d-flex align-items-center">
@@ -213,11 +223,11 @@
                             <h1 class="display-6 mb-4">Hóa đơn</h1>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Tổng tiền:</h5>
-                                <p class="mb-0">{{ number_format($subTotal, 0, '', ',') }} VND</p>
+                                <p class="mb-0" id="sub-price">0 VND</p>
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Phí vận chuyển</h5>
-                                <p class="mb-0">13,00 VND</p>
+                                <p class="mb-0">30,000 VND</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <h5 class="mb-0 me-4">Giảm giá:</h5>
@@ -226,12 +236,14 @@
                         </div>
                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                             <h5 class="mb-0 ps-4 me-4">Thành tiền</h5>
-                            <?php
-                            $totalPrice = $subTotal + 13000
-                            ?>
-                            <p class="mb-0 pe-4">{{ number_format($totalPrice, 0, '', ',') }} VND</p>
+                            <p class="mb-0 pe-4" id="total-price">0 VND</p>
                         </div>
-                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Đặt hàng</button>
+                        <form action="{{ route('cart.getSelected') }}" method="POST">
+                            @method('POST')
+                            @csrf
+                            <input name="selectedIds" type="hidden" class="border-0 border-bottom rounded me-5 py-3 mb-4" value="" id="selectedIds">
+                            <button onclick="return getAllSelected()" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit">Đặt hàng</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -333,6 +345,50 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
+    @if (session('success'))
+
+    <div id="success-header-modal" class="modal fade show" tabindex="-1" role="dialog"
+        aria-labelledby="success-header-modalLabel" style="padding-right: 16px; background: #22222294;" aria-modal="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-success">
+                    <h4 class="modal-title text-white" id="success-header-modalLabel">Thông báo
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ session('success') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    @endif
+
+    @if (session('error'))
+
+    <div id="danger-header-modal" class="modal fade show" tabindex="-1" role="dialog"
+        aria-labelledby="danger-header-modalLabel" style="padding-right: 16px; background: #22222294;" aria-modal="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-danger">
+                    <h4 class="modal-title text-white" id="danger-header-modalLabel">Thông báo</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ session('error') }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    @endif
 
     <script>
         function deleteCartItem(productId) {
@@ -350,11 +406,63 @@
                     }
                 });
         }
+
+        function getAllSelected() {
+            // Lấy tất cả các checkbox đã checked
+            var selectedCheckboxes = document.querySelectorAll('.select-item:checked');
+            var selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+            // Kiểm tra nếu không chọn sản phẩm nào
+            if (selectedIds.length === 0) {
+                document.getElementById('selectedIds').value = "";
+                return;
+            } else {
+                document.getElementById('selectedIds').value = selectedIds;
+            }
+        }
+    </script>
+
+    <script>
+        document.getElementById('select-all')
+            .addEventListener('change', function() {
+                let checkboxes =
+                    document.querySelectorAll('.select-item');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = this.checked;
+                }, this);
+                calculateTotal();
+            });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hiển thị modal thông báo thành công nếu tồn tại session
+            if (document.getElementById('success-header-modal')) {
+                const successModal = new bootstrap.Modal(document.getElementById('success-header-modal'));
+                successModal.show();
+            }
+            // Hiển thị modal thông báo lỗi nếu tồn tại lỗi
+            if (document.getElementById('danger-header-modal')) {
+                const dangerModal = new bootstrap.Modal(document.getElementById('danger-header-modal'));
+                dangerModal.show();
+            }
+        });
+
+        document.querySelectorAll('.select-item').forEach(checkbox => {
+            checkbox.addEventListener('change', calculateTotal);
+        });
+
+        function calculateTotal() {
+            let total = 0;
+            document.querySelectorAll('.select-item:checked').forEach(checkbox => {
+                total += parseInt(checkbox.dataset.price) * parseInt(checkbox.dataset.amount);
+            });
+            let total_ship = total + 30000;
+            document.getElementById('sub-price').innerText = total.toLocaleString('vi-VN').replace(/\./g, ',') + ' VND';
+            document.getElementById('total-price').innerText = total_ship.toLocaleString('vi-VN').replace(/\./g, ',') + ' VND';
+        }
     </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
     <script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>

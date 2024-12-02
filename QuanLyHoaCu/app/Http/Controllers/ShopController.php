@@ -64,7 +64,7 @@ class ShopController extends Controller
         return view('shop', array_merge($getDuplicateData, [
             'products' => $products,
             'shopQuantity' => $shopQuantity,
-            'productsByCategory' => $productsByCategory,
+            'productsByCategory' => $productsByCategory
         ]));
     }
 

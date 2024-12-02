@@ -81,7 +81,7 @@
                             </a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                 <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
-                                <a href="#" class="dropdown-item">Đơn hàng</a>
+                                <a href="{{ route('orderscus.index') }}" class="dropdown-item">Đơn hàng</a>
                                 <a href="#" class="dropdown-item">Đăng xuất</a>
                             </div>
                         </div>

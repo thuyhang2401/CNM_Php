@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body p-2">
+                    <div class="card-body px-5 py-2">
                         <div class="modal-body">
                             <div class="d-flex flex-row justify-content-between">
                                 <div>
@@ -58,6 +58,9 @@
                                     </div>
                                 @endforeach
                                 <p>Phí giao hàng: <span class="order-delivery-fee">{{$data->delivery_fee}}</span></p>
+                                <p>Phương thức thanh toán: <span class="order-note">{{$data->payment}}</span></p>
+                                <p>Thời gian thanh toán: <span class="order-note">{{$data->payment_at}}</span></p>
+                                
                                 <p>Ghi chú: <span class="order-note">{{$data->note}}</span></p>
                                 <p class="text-right">Tổng tiền: <strong class="order-total-fee"
                                         style="font-size:40px">{{$data->total_price}} VNĐ</strong></p>

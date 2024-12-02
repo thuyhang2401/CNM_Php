@@ -1,12 +1,14 @@
 <?php
 
-
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderCustomerController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,8 +24,19 @@ Route::prefix('QuanLyHoaCu')->group(function () {
     // management cart 
     Route::get('/cart', [CartController::class, 'listCart'])->name('cart.list');
     Route::post('/cart', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/checkout', [CartController::class, 'getSelectedProduct'])->name('cart.getSelected');
     Route::put('/cart', [CartController::class, 'updateCart'])->name('cart.update');
     Route::delete('/cart/{productId}', [CartController::class, 'deleteCart'])->name('cart.delete');
+
+    // payment
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'createOrder'])->name('checkout.offline');
+    Route::post('/checkout/vnpay', [CheckoutController::class, 'vnpayPayment'])->name('checkout.vnpay');
+    Route::get('/checkout/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('checkout.vnpay_return');
+
+    // order
+    Route::get('/orders', [OrderCustomerController::class, 'index'])->name('orderscus.index');
+    Route::get('/orders/{orderId}', [OrderCustomerController::class, 'show'])->name('orderscus.show');
 
     // edit customer profile
     Route::get('customer/profile', [CustomerController::class, 'showProfile'])->name('customer.profile');
