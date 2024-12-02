@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id('order_id');
             $table->dateTime('created_at');
             $table->string('note', 100)->nullable();
+            $table->string('name', 100);
             $table->string('phone_number', 11);
             $table->string('shipping_address', 100);
             $table->string('payment', 50);
+            $table->dateTime('payment_at');
             $table->enum('status', ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao', 'Đã giao', 'Đã hủy']);
             $table->integer('delivery_fee');
             $table->unsignedBigInteger('customer_id');

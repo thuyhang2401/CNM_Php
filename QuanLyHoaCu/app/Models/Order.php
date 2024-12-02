@@ -11,13 +11,15 @@ class Order extends Model
 
     protected $table = 'orders';
     protected $primaryKey = 'order_id';
-    public $timestamps = true;
+    public $timestamps = false;
     protected $fillable = [
         'created_at',
         'note',
+        'name',
         'phone_number',
         'shipping_address',
         'payment',
+        'payment_at',
         'status',
         'delivery_fee',
         'customer_id'

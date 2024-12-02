@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->primary(['order_id', 'product_id']);
 
-            $table->integer('quatity');
+            $table->integer('quantity');
         });
     }
 

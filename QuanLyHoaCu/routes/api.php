@@ -21,5 +21,3 @@ Route::middleware(['web'])->group(function () {
 });
 
 Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
-Route::get('orders', [OrderController::class, 'index']);
-Route::get('orders/{id}', [OrderController::class, 'show']);
