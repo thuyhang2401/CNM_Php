@@ -13,7 +13,12 @@ class CategoryService
         $this->category = $category;
     }
 
-    public function getAllCategory()
+    function getAllCategories()
+    {
+        return $this->category::all();
+    }
+
+    public function getCategoryWithProduct()
     {
         return $this->category
             ->withCount('product')

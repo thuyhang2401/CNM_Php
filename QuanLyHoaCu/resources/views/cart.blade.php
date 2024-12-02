@@ -63,10 +63,17 @@
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
+<<<<<<< HEAD
                         <a href="{{ route('product.index') }}" class="nav-item nav-link {{ request()->routeIs('product.index') ? 'active' : '' }}">Trang chủ</a>
                         <a href="{{ route('product.shop') }}" class="nav-item nav-link {{ request()->routeIs('product.shop') ? 'active' : '' }}">Sản phẩm</a>
                         <a href="{{ route('cart.list') }}" class="nav-item nav-link {{ request()->routeIs('cart.list') ? 'active' : '' }}">Giỏ hàng</a>
                         <a href="contact.html" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Liên hệ</a>
+=======
+                        <a href="{{ route('product.index') }}" class="nav-item nav-link">Trang chủ</a>
+                        <a href="{{ route('product.shop') }}" class="nav-item nav-link">Sản phẩm</a>
+                        <a href="{{ route('cart.list') }}" class="nav-item nav-link active">Giỏ hàng</a>
+                        <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
                     </div>
                     <div class="d-flex m-3 me-0">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -80,8 +87,13 @@
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
+<<<<<<< HEAD
                                 <a href="#" class="dropdown-item">Tài khoản của tôi</a>
                                 <a href="{{ route('orders.index') }}" class="dropdown-item">Đơn hàng</a>
+=======
+                                <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
+                                <a href="#" class="dropdown-item">Đơn hàng</a>
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
                                 <a href="#" class="dropdown-item">Đăng xuất</a>
                             </div>
                         </div>
@@ -102,10 +114,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex align-items-center">
+<<<<<<< HEAD
                     <div class="input-group w-75 mx-auto d-flex">
                         <input type="search" class="form-control p-3" placeholder="Nhập để tìm kiếm" aria-describedby="search-icon-1">
                         <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                     </div>
+=======
+                    <form action="{{ route('product.shop') }}" method="GET" class="modal-body d-flex">
+                        <div class="input-group w-75 mx-auto d-flex">
+                            <input type="search" id="searchString" name="searchString" class="form-control p-3" placeholder="Nhập để tìm kiếm" aria-describedby="search-icon-1">
+                            <button type="submit" id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
                 </div>
             </div>
         </div>
@@ -135,11 +156,14 @@
                     <table class="table">
                         <thead>
                             <tr>
+<<<<<<< HEAD
                                 <th>
                                     <div class="form-check">
                                         <input class="form-check-input" id="select-all" type="checkbox">
                                     </div>
                                 </th>
+=======
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
                                 <th scope="col">Hình ảnh</th>
                                 <th scope="col">Sản phẩm</th>
                                 <th scope="col">Đơn giá</th>
@@ -156,11 +180,14 @@
                             @else
                             @foreach ($carts as $cart)
                             <tr>
+<<<<<<< HEAD
                                 <td>
                                     <div class="form-check">
                                         <input class="form-check-input select-item" type="checkbox" value="{{ $cart->product->product_id }}" data-price="{{ $cart->product->price }}" data-amount="{{ $cart->quantity }}" name="selectedCarts[]">
                                     </div>
                                 </td>
+=======
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
                                 <th scope="row">
                                     <input type="hidden" value="{{ $cart->product->product_id }}" name="productIds[]">
                                     <div class="d-flex align-items-center">
@@ -221,11 +248,19 @@
                             <h1 class="display-6 mb-4">Hóa đơn</h1>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Tổng tiền:</h5>
+<<<<<<< HEAD
                                 <p class="mb-0" id="sub-price">0 VND</p>
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Phí vận chuyển</h5>
                                 <p class="mb-0">30,000 VND</p>
+=======
+                                <p class="mb-0">{{ number_format($subTotal, 0, '', ',') }} VND</p>
+                            </div>
+                            <div class="d-flex justify-content-between mb-4">
+                                <h5 class="mb-0 me-4">Phí vận chuyển</h5>
+                                <p class="mb-0">13,00 VND</p>
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
                             </div>
                             <div class="d-flex justify-content-between">
                                 <h5 class="mb-0 me-4">Giảm giá:</h5>
@@ -234,6 +269,7 @@
                         </div>
                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                             <h5 class="mb-0 ps-4 me-4">Thành tiền</h5>
+<<<<<<< HEAD
                             <p class="mb-0 pe-4" id="total-price">0 VND</p>
                         </div>
                         <form action="{{ route('cart.getSelected') }}" method="POST">
@@ -242,6 +278,14 @@
                             <input name="selectedIds" type="hidden" class="border-0 border-bottom rounded me-5 py-3 mb-4" value="" id="selectedIds">
                             <button onclick="return getAllSelected()" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit">Đặt hàng</button>
                         </form>
+=======
+                            <?php
+                            $totalPrice = $subTotal + 13000
+                            ?>
+                            <p class="mb-0 pe-4">{{ number_format($totalPrice, 0, '', ',') }} VND</p>
+                        </div>
+                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Đặt hàng</button>
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
                     </div>
                 </div>
             </div>
@@ -343,6 +387,7 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
+<<<<<<< HEAD
     @if (session('success'))
 
     <div id="success-header-modal" class="modal fade show" tabindex="-1" role="dialog"
@@ -388,6 +433,8 @@
     </div>
     @endif
 
+=======
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
 
     <script>
         function deleteCartItem(productId) {
@@ -405,6 +452,7 @@
                     }
                 });
         }
+<<<<<<< HEAD
 
         function getAllSelected() {
             // Lấy tất cả các checkbox đã checked
@@ -457,11 +505,17 @@
             document.getElementById('sub-price').innerText = total.toLocaleString('vi-VN').replace(/\./g, ',') + ' VND';
             document.getElementById('total-price').innerText = total_ship.toLocaleString('vi-VN').replace(/\./g, ',') + ' VND';
         }
+=======
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
     </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+=======
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+>>>>>>> eec086ac47d979585c8e8401d51d4c8e7948e050
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
     <script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>

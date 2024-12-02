@@ -10,7 +10,8 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb m-0 p-0">
                             <li class="breadcrumb-item"><a href="" class="text-muted">Home</a></li>
-                            <li class="breadcrumb-item text-muted active" aria-current="page"><a href="{{url('staff/products')}}">Quản lý sản phẩm</a></li>
+                            <li class="breadcrumb-item text-muted active" aria-current="page"><a
+                                    href="{{url('staff/products')}}">Quản lý sản phẩm</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -20,23 +21,23 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{url('/staff/products')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('POST')
                     <div class="card">
                         <div class="modal-body">
-                        <div class="form-group">
-                            <div class="d-flex flex-column align-items-center">
-                                <!-- Hiển thị ảnh hiện tại -->
-                                <img id="current-image" 
-                                    src="{{ asset('staff/assets/images/product/product_upload.png')}}" 
-                                    alt="Current Image" 
-                                    width="150" name="image">
+                            <div class="form-group">
+                                <div class="d-flex flex-column align-items-center">
+                                    <!-- Hiển thị ảnh hiện tại -->
+                                    <img id="current-image"
+                                        src="{{ old('image') ? asset('storage/' . old('image')) : asset('img/product_upload.png') }}"
+                                        alt="Current Image" width="150" name="image">
 
-                                <!-- Nút chọn ảnh -->
-                                <input type="file" class="form-control-file w-40 mt-3" id="image-input" value="" accept="image/*" style="display: none;" name="image">
+                                    <!-- Nút chọn ảnh -->
+                                    <input type="file" class="form-control-file w-40 mt-3" id="image-input" value=""
+                                        accept="image/*" style="display: none;" name="image">
+                                </div>
                             </div>
-                        </div>
                             <div class="mt-3">
                                 <label>Tên sản phẩm</label>
                                 <input name="product_name" type="text" class="form-control" id="prd-name"
@@ -54,7 +55,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="mt-3">
                                 <label>Giá tiền</label>
                                 <input name="price" type="number" class="form-control" id="prd-price"
@@ -77,7 +78,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="window.location.href='{{url('staff/products')}}'">Đóng</button>
                             <button type="submit" class="btn btn-primary">Thêm mới</button>
                         </div>
                     </div>
@@ -91,72 +93,93 @@
 
 
 @if (session('success'))
-    <div class="toast fade show" data-autohide="false" style="position: absolute; top: 100px; right: 0;">
-        <div class="toast-header">
-            <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
-                <rect fill="#22ca80" width="100%" height="100%"></rect>
-            </svg>
-            <strong class="mr-auto">Thông báo</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            {{ session('success') }}
-        </div>
+
+    <div id="success-header-modal" class="modal fade show" tabindex="-1" role="dialog"
+        aria-labelledby="success-header-modalLabel" style="padding-right: 16px; background: #22222294;" aria-modal="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-success">
+                    <h4 class="modal-title" id="success-header-modalLabel">Thông báo
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ session('success') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 @endif
 
 @if ($errors->any())
-    <div class="toast fade show" data-autohide="false" style="position: absolute; top: 100px; right: 0;">
-        <div class="toast-header">
-            <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
-                <rect fill="#ff4f70" width="100%" height="100%"></rect>
-            </svg>
-            <strong class="mr-auto">Thông báo</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+
+    <div id="danger-header-modal" class="modal fade show" tabindex="-1" role="dialog"
+        aria-labelledby="danger-header-modalLabel" style="padding-right: 16px; background: #22222294;" aria-modal="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-danger">
+                    <h4 class="modal-title" id="danger-header-modalLabel">Thông báo</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 @endif
 <script>
 
-document.getElementById('current-image').addEventListener('click', function() {
-    // Mô phỏng hành động click vào input file khi người dùng nhấp vào ảnh
-    document.getElementById('image-input').click();
-});
+    document.getElementById('current-image').addEventListener('click', function () {
+        // Mô phỏng hành động click vào input file khi người dùng nhấp vào ảnh
+        document.getElementById('image-input').click();
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
-    const imageInput = document.getElementById('image-input');
-    const currentImage = document.getElementById('current-image');
+        const imageInput = document.getElementById('image-input');
+        const currentImage = document.getElementById('current-image');
 
-    imageInput.addEventListener('change', function (event) {
-        const file = event.target.files[0]; // Lấy file đầu tiên được chọn
+        imageInput.addEventListener('change', function (event) {
+            const file = event.target.files[0]; // Lấy file đầu tiên được chọn
 
-        if (file) {
-            // Kiểm tra xem file có phải là ảnh
-            if (file.type.startsWith('image/')) {
-                // Tạo URL tạm thời cho ảnh được chọn
-                const imageURL = URL.createObjectURL(file);
+            if (file) {
+                // Kiểm tra xem file có phải là ảnh
+                if (file.type.startsWith('image/')) {
+                    // Tạo URL tạm thời cho ảnh được chọn
+                    const imageURL = URL.createObjectURL(file);
 
-                // Thay thế ảnh hiện tại bằng ảnh mới
-                currentImage.src = imageURL;
-            } else {
-                alert('Vui lòng chọn một file ảnh hợp lệ!');
+                    // Thay thế ảnh hiện tại bằng ảnh mới
+                    currentImage.src = imageURL;
+                } else {
+                    alert('Vui lòng chọn một file ảnh hợp lệ!');
+                }
             }
+        });
+
+        // Hiển thị modal thông báo thành công nếu tồn tại session
+        if (document.getElementById('success-header-modal')) {
+            const successModal = new bootstrap.Modal(document.getElementById('success-header-modal'));
+            successModal.show();
+        }
+
+        // Hiển thị modal thông báo lỗi nếu tồn tại lỗi
+        if (document.getElementById('danger-header-modal')) {
+            const dangerModal = new bootstrap.Modal(document.getElementById('danger-header-modal'));
+            dangerModal.show();
         }
     });
-});
 
 </script>
 @endsection

@@ -11,7 +11,7 @@ class Customer extends Model
 
     protected $table = 'customers';
     protected $primaryKey = 'customer_id';
-    public $timestamps = true;
+    public $timestamps = false;
     protected $fillable = [
         'fullname',
         'gender',
@@ -21,6 +21,11 @@ class Customer extends Model
         'avatar',
         'account_id'
     ];
+    
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'account_id', 'account_id');
+    }
 
     public function orders()
     {

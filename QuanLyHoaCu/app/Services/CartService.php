@@ -23,7 +23,7 @@ class CartService
             ->with('product')
             ->get();
     }
-    
+
     public function getListCartSelected($selectedCartIds)
     {
         return $this->cart
