@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('staff/assets/images/favicon.png')}}">
-    <title>Adminmart Template - The Ultimate Multipurpose admin template</title>
+    <title>AdminArt - The Ultimate Multipurpose admin for Painting Tools Website</title>
     <link href="{{ asset('staff/dist/css/style.min.css')}}" rel="stylesheet">
 </head>
 

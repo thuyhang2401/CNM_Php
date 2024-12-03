@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone_number', 11);
             $table->string('shipping_address', 100);
             $table->string('payment', 50);
-            $table->dateTime('payment_at');
+            $table->dateTime('payment_at')->nullable();
             $table->enum('status', ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao', 'Đã giao', 'Đã hủy']);
             $table->integer('delivery_fee');
             $table->unsignedBigInteger('customer_id');

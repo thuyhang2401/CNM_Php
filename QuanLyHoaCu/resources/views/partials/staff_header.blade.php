@@ -6,12 +6,13 @@
             <div class="navbar-brand">
                 <a href="index.html">
                     <b class="logo-icon">
-                        <img src="{{ asset('staff/assets/images/logo-icon.png')}}" alt="homepage" class="dark-logo" />
-                        <img src="{{ asset('staff/assets/images/logo-icon.png')}}" alt="homepage" class="light-logo" />
+                        <img src="{{ asset('staff/assets/images/logo-icon-2.png')}}" alt="homepage" class="dark-logo" />
+                        <img src="{{ asset('staff/assets/images/logo-icon-2.png')}}" alt="homepage" class="light-logo" />
                     </b>
                     <span class="logo-text">
-                        <img src="{{ asset('staff/assets/images/logo-text.png')}}" alt="homepage" class="dark-logo" />
-                        <img src="{{ asset('staff/assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" />
+                        <h2 class="text-primary dark-logo" alt="homepage"><b>Admin</b>Art</h2>
+                        <!-- <img src="{{ asset('staff/assets/images/logo-text.png')}}" alt="homepage" class="dark-logo" />
+                        <img src="{{ asset('staff/assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" /> -->
                     </span>
                 </a>
             </div>
@@ -57,6 +58,3 @@
         </div>
     </nav>
 </header>
-        
-
-        

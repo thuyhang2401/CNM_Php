@@ -89,7 +89,7 @@ class AccountController extends Controller
 
             // Chỉ cập nhật mật khẩu nếu người dùng nhập mật khẩu mới
             if ($request->filled('password')) {
-                $data['password'] = bcrypt($request->password); // Mã hóa mật khẩu mới
+                $data['password'] = $request->password;
             } else {
                 // Nếu không thay đổi mật khẩu, giữ nguyên giá trị mật khẩu cũ
                 unset($data['password']);  // Đảm bảo mật khẩu cũ không bị thay đổi
@@ -102,7 +102,6 @@ class AccountController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Đã xảy ra lỗi khi cập nhật tài khoản!'])->withInput();
         }
-
     }
 
     public function destroy(Account $account)
