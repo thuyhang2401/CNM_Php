@@ -8,6 +8,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderCustomerController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AccountController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -60,4 +63,24 @@ Route::middleware(['web'])->group(function () {
     // Thay đổi profile
     Route::resource('staff/profile', StaffController::class);
 
+});
+
+//cac route danh cho admin
+Route::middleware(['web'])->group(function () {
+    // Định nghĩa nhóm route cho admin
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // Route cho trang thống kê 
+        Route::get('index', [AdminController::class, 'index'])->name('index');
+        
+        // Route cho categories
+        Route::resource('categories', CategoryController::class);
+
+        // Route cho accounts
+        Route::resource('accounts', AccountController::class);
+
+        Route::post('accounts/activate/{id}', [AccountController::class, 'activate'])
+            ->name('accounts.activate');
+        Route::post('accounts/deactivate/{id}', [AccountController::class, 'deactivate'])
+            ->name('accounts.deactivate');        
+    });
 });
