@@ -23,14 +23,14 @@ class CustomerController extends Controller
     private function getDuplicateData()
     {
         return [
-            'cartQuantity' => $this->cartService->getCartQuantity()
+            'cartQuantity' => $this->cartService->getCartQuantity(session('customerId'))
         ];
     }
 
     public function showProfile()
     {
         $getDuplicateData = $this->getDuplicateData();
-        $profile = $this->customerService->getDataToProfile();
+        $profile = $this->customerService->getDataToProfile(session('customerId'));
 
         return view(
             'customer-profile',
@@ -53,6 +53,7 @@ class CustomerController extends Controller
     public function updateProfile(CustomerProfileRequest $request)
     {
         $validatedData = $request->validated();
+        $customerId = session('customerId');
 
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
@@ -65,15 +66,16 @@ class CustomerController extends Controller
             }
         }
 
-        $this->customerService->updateProfile($validatedData);
+        $this->customerService->updateProfile($validatedData, $customerId);
         return redirect()->route('customer.profile');
     }
 
     public function updatePassword(CustomerPasswordRequest $request)
     {
         $validatedData = $request->validated();
+        $customerId = session('customerId');
 
-        $this->customerService->updatePassword($validatedData);
+        $this->customerService->updatePassword($validatedData, $customerId);
         return redirect()->route('customer.password');
     }
 }

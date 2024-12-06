@@ -28,7 +28,7 @@ class ShopController extends Controller
         return [
             'featuredProducts' => $this->shopService->getFeaturedProduct(),
             'categories' => $this->categoryService->getCategoryWithProduct(),
-            'cartQuantity' => $this->cartService->getCartQuantity(),
+            'cartQuantity' => $this->cartService->getCartQuantity(session('customerId')),
         ];
     }
 

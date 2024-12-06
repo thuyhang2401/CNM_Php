@@ -8,49 +8,46 @@ class CartService
 {
     protected $cart;
 
-    // get id of customer after login
-    protected $customerId = 1;
-
     public function __construct(Cart $cart)
     {
         $this->cart = $cart;
     }
 
-    public function getListCart()
+    public function getListCart($customerId)
     {
         return $this->cart
-            ->where('customer_id', $this->customerId)
+            ->where('customer_id', $customerId)
             ->with('product')
             ->get();
     }
 
-    public function getListCartSelected($selectedCartIds)
+    public function getListCartSelected($selectedCartIds, $customerId)
     {
         return $this->cart
-            ->where('customer_id', $this->customerId)
+            ->where('customer_id', $customerId)
             ->whereIn('product_id', $selectedCartIds)
             ->get();
     }
 
-    public function getCartQuantity()
+    public function getCartQuantity($customerId)
     {
         return $this->cart
-            ->where('customer_id', $this->customerId)
+            ->where('customer_id', $customerId)
             ->count();
     }
 
-    public function updateQuantityInCart($productId, $newQuantity)
+    public function updateQuantityInCart($productId, $customerId, $newQuantity)
     {
         return $this->cart
-            ->where('customer_id', $this->customerId)
+            ->where('customer_id', $customerId)
             ->where('product_id', $productId)
             ->update(['quantity' => $newQuantity]);
     }
 
-    public function addProductToCart($productId, $quantity)
+    public function addProductToCart($productId, $customerId, $quantity)
     {
         $cartItem = $this->cart
-            ->where('customer_id', $this->customerId)
+            ->where('customer_id', $customerId)
             ->where('product_id', $productId)
             ->first();
 
@@ -58,21 +55,21 @@ class CartService
             $qtt = $cartItem->quantity;
             $newQuantity = $qtt + $quantity;
 
-            return $this->updateQuantityInCart($productId, $newQuantity);
+            return $this->updateQuantityInCart($productId, $customerId, $newQuantity);
         } else {
             return $this->cart
                 ->create([
-                    'customer_id' => $this->customerId,
+                    'customer_id' => $customerId,
                     'product_id' => $productId,
                     'quantity' => $quantity
                 ]);
         }
     }
 
-    public function deleteProductInCart($productId)
+    public function deleteProductInCart($productId, $customerId)
     {
         return $this->cart
-            ->where('customer_id', $this->customerId)
+            ->where('customer_id', $customerId)
             ->where('product_id', $productId)
             ->delete();
     }

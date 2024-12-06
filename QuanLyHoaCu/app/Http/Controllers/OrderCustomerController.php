@@ -21,8 +21,8 @@ class OrderCustomerController extends Controller
 
     public function index()
     {
-        $customerId = 1;
-        $cartQuantity = $this->cartService->getCartQuantity();
+        $customerId = session('customerId');
+        $cartQuantity = $this->cartService->getCartQuantity($customerId);
 
         $data = $this->orderService->getList($customerId);
         $waitConfirm = $this->orderService->getListByStatus($customerId, 'Chờ xác nhận');
@@ -46,7 +46,7 @@ class OrderCustomerController extends Controller
     {
         $order = $this->orderService->getOrderById($orderId);
         $products = $this->orderDetailService->getList($orderId);
-        $cartQuantity = $this->cartService->getCartQuantity();
+        $cartQuantity = $this->cartService->getCartQuantity(session('customerId'));
         $total_money = 0;
 
         foreach ($products as $product) {

@@ -63,16 +63,16 @@
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
-                        <a href="{{ route('product.index') }}" class="nav-item nav-link">Trang chủ</a>
+                        <a href="{{ route('product.index') }}" class="nav-item nav-link active">Trang chủ</a>
                         <a href="{{ route('product.shop') }}" class="nav-item nav-link">Sản phẩm</a>
-                        <a href="{{ route('cart.list') }}" class="nav-item nav-link active">Giỏ hàng</a>
+                        <a href="{{ route('cart.list') }}" class="nav-item nav-link">Giỏ hàng</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                         <a href="{{ route('cart.list') }}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ $cartQuantity }}</span>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">0</span>
                         </a>
 
                         <div class="nav-item dropdown">
@@ -80,20 +80,8 @@
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <?php
-                                if (session('customerId') != null) {
-                                ?>
-                                    <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
-                                    <a href="{{ route('orderscus.index') }}" class="dropdown-item">Đơn hàng</a>
-                                    <a href="{{ route('logout') }}" class="dropdown-item">Đăng xuất</a>
-                                <?php
-                                } else {
-                                ?>
-                                    <a href="{{ route('login') }}" class="dropdown-item">Đăng nhập</a>
-                                    <a href="{{ route('register') }}" class="dropdown-item">Đăng ký</a>
-                                <?php
-                                }
-                                ?>
+                                <a href="{{ route('login') }}" class="dropdown-item">Đăng nhập</a>
+                                <a href="{{ route('register') }}" class="dropdown-item">Đăng ký</a>
                             </div>
                         </div>
                     </div>
@@ -103,165 +91,59 @@
     </div>
     <!-- Navbar End -->
 
-
-    <!-- Modal Search Start -->
-    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content rounded-0">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tìm kiếm bằng từ khóa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex align-items-center">
-                    <form action="{{ route('product.shop') }}" method="GET" class="modal-body d-flex">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" id="searchString" name="searchString" class="form-control p-3" placeholder="Nhập để tìm kiếm" aria-describedby="search-icon-1">
-                            <button type="submit" id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal Search End -->
-
-
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Giỏ hàng</h1>
+        <h1 class="text-center text-white display-6">Đăng nhập</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             <li class="breadcrumb-item"><a href="{{ route('product.index') }}">Trang chủ</a></li>
-            <li class="breadcrumb-item active text-white">Giỏ hàng</li>
+            <li class="breadcrumb-item active text-white">Đăng nhập</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
 
-
-    <!-- Cart Page Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <!-- Update cart form -->
-            <form action="{{ route('cart.update') }}" method="POST">
-                @method('PUT')
-                @csrf
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <div class="form-check">
-                                        <input class="form-check-input" id="select-all" type="checkbox">
-                                    </div>
-                                </th>
-                                <th scope="col">Hình ảnh</th>
-                                <th scope="col">Sản phẩm</th>
-                                <th scope="col">Đơn giá</th>
-                                <th scope="col">Số lượng</th>
-                                <th scope="col">Tổng tiền</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($carts->isEmpty())
-                            <tr>
-                                <td colspan="6" class="text-center" style="padding: 40px 0;">Chưa có sản phẩm trong giỏ hàng</td>
-                            </tr>
-                            @else
-                            @foreach ($carts as $cart)
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input select-item" type="checkbox" value="{{ $cart->product->product_id }}" data-price="{{ $cart->product->price }}" data-amount="{{ $cart->quantity }}" name="selectedCarts[]">
-                                    </div>
-                                </td>
-                                <th scope="row">
-                                    <input type="hidden" value="{{ $cart->product->product_id }}" name="productIds[]">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ asset('img/'. $cart->product->image) }}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
-                                    </div>
-                                </th>
-                                <td>
-                                    <p class="mb-0 mt-4">{{ $cart->product->product_name }}</p>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">{{ number_format($cart->product->price, 0, '', ',') }} VND</p>
-                                </td>
-                                <td>
-                                    <div class="input-group quantity mt-4" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" type="button">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" name="quantities[{{ $cart->product->product_id }}]" class="form-control form-control-sm text-center border-0" value="{{ $cart->quantity }}">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">{{ number_format($cart->product->price * $cart->quantity, 0, '', ',') }} VND</p>
-                                </td>
-                                <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4" onclick="deleteCartItem('{{ $cart->product->product_id }}')">
-                                        <i class="fa fa-times text-danger"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-5">
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="submit">Cập nhật giỏ hàng</button>
-                </div>
-            </form>
-            <!-- End Update cart form -->
-
-            <div class="mt-5">
-                <h5 class="mb-0 me-4">Giảm giá:</h5>
-                <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Nhập mã giảm giá">
-                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Áp dụng mã giảm giá</button>
-            </div>
-            <div class="row g-4 justify-content-end">
-                <div class="col-8"></div>
-                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                    <div class="bg-light rounded">
-                        <div class="p-4">
-                            <h1 class="display-6 mb-4">Hóa đơn</h1>
-                            <div class="d-flex justify-content-between mb-4">
-                                <h5 class="mb-0 me-4">Tổng tiền:</h5>
-                                <p class="mb-0" id="sub-price">0 VND</p>
-                            </div>
-                            <div class="d-flex justify-content-between mb-4">
-                                <h5 class="mb-0 me-4">Phí vận chuyển</h5>
-                                <p class="mb-0">30,000 VND</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h5 class="mb-0 me-4">Giảm giá:</h5>
-                                <p class="mb-0">0 VND</p>
-                            </div>
-                        </div>
-                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                            <h5 class="mb-0 ps-4 me-4">Thành tiền</h5>
-                            <p class="mb-0 pe-4" id="total-price">0 VND</p>
-                        </div>
-                        <form action="{{ route('cart.getSelected') }}" method="POST">
-                            @method('POST')
-                            @csrf
-                            <input name="selectedIds" type="hidden" class="border-0 border-bottom rounded me-5 py-3 mb-4" value="" id="selectedIds">
-                            <button onclick="return getAllSelected()" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit">Đặt hàng</button>
-                        </form>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <form action="{{ route('check_login') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('POST')
+                    <div class="mt-3">
+                        <label>Email</label>
+                        <input name="email" type="email" class="form-control" aria-describedby="name"
+                            placeholder="Nhập email" required>
                     </div>
+                    <div class="mt-3">
+                        <label>Mật khẩu</label>
+                        <div class="input-group">
+                            <input id="password" name="password" type="password" class="form-control" aria-describedby="name" required
+                                placeholder="Nhập mật khẩu">
+                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between">
+                        <!-- Remember Me -->
+                        <div class="block mt-2">
+                            <label for="remember_me" class="inline-flex items-center">
+                                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                                <span class="ms-2 text-sm text-gray-600">Nhớ tài khoản</span>
+                            </label>
+                        </div>
+                        <div class="block mt-2">
+                            <label class="inline-flex items-center">
+                                <a href="{{ route('forgetPassword') }}" class="ms-2 text-sm text-gray-600">Quên mật khẩu?</a>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-4 text-white">Đăng nhập</button>
+                </form>
+                <div class="mt-3 d-flex justify-content-center">
+                    <p>Bạn chưa có tài khoản? <a href="{{ route('register') }}">Đăng ký ngay</a></p>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Cart Page End -->
-
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -351,11 +233,6 @@
     </div>
     <!-- Copyright End -->
 
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
-
     @if (session('success'))
 
     <div id="success-header-modal" class="modal fade show" tabindex="-1" role="dialog"
@@ -401,47 +278,23 @@
     </div>
     @endif
 
-    <script>
-        function deleteCartItem(productId) {
-            fetch('{{ route("cart.delete", ":product_id") }}'.replace(':product_id', productId), {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.redirect) {
-                        window.location.href = data.redirect;
-                    }
-                });
-        }
-
-        function getAllSelected() {
-            // Lấy tất cả các checkbox đã checked
-            var selectedCheckboxes = document.querySelectorAll('.select-item:checked');
-            var selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
-            // Kiểm tra nếu không chọn sản phẩm nào
-            if (selectedIds.length === 0) {
-                document.getElementById('selectedIds').value = "";
-                return;
-            } else {
-                document.getElementById('selectedIds').value = selectedIds;
-            }
-        }
-    </script>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
     <script>
-        document.getElementById('select-all')
-            .addEventListener('change', function() {
-                let checkboxes =
-                    document.querySelectorAll('.select-item');
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.checked = this.checked;
-                }, this);
-                calculateTotal();
-            });
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        togglePassword.addEventListener('click', () => {
+            // Kiểm tra trạng thái hiển thị
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Đổi biểu tượng
+            toggleIcon.classList.toggle('bi-eye');
+            toggleIcon.classList.toggle('bi-eye-slash');
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             // Hiển thị modal thông báo thành công nếu tồn tại session
@@ -455,25 +308,10 @@
                 dangerModal.show();
             }
         });
-
-        document.querySelectorAll('.select-item').forEach(checkbox => {
-            checkbox.addEventListener('change', calculateTotal);
-        });
-
-        function calculateTotal() {
-            let total = 0;
-            document.querySelectorAll('.select-item:checked').forEach(checkbox => {
-                total += parseInt(checkbox.dataset.price) * parseInt(checkbox.dataset.amount);
-            });
-            let total_ship = total + 30000;
-            document.getElementById('sub-price').innerText = total.toLocaleString('vi-VN').replace(/\./g, ',') + ' VND';
-            document.getElementById('total-price').innerText = total_ship.toLocaleString('vi-VN').replace(/\./g, ',') + ' VND';
-        }
     </script>
-
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
     <script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>

@@ -49,7 +49,7 @@
                         <a class="dropdown-item" href="{{url('staff/profile/1')}}"><i data-feather="user"
                                 class="svg-icon mr-2 ml-1"></i>
                             Tài khoản của tôi</a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i data-feather="power"
+                        <a class="dropdown-item" href="{{ route('logout') }}"><i data-feather="power"
                                 class="svg-icon mr-2 ml-1"></i>
                             Logout</a>
                     </div>

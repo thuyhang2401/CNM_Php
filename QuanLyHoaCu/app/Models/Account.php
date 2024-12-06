@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class Account extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     protected $table = 'accounts';
     protected $primaryKey = 'account_id';
     public $timestamps = false;
@@ -35,10 +35,10 @@ class Account extends Authenticatable
         ];
     }
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
+    // public function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = Hash::make($value);
+    // }
 
     public function role()
     {

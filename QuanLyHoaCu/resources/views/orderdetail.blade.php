@@ -82,9 +82,20 @@
                 <i class="fas fa-user fa-2x"></i>
               </a>
               <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
-                <a href="{{ route('orderscus.index') }}" class="dropdown-item">Đơn hàng</a>
-                <a href="#" class="dropdown-item">Đăng xuất</a>
+                <?php
+                if (session('customerId') != null) {
+                ?>
+                  <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
+                  <a href="{{ route('orderscus.index') }}" class="dropdown-item">Đơn hàng</a>
+                  <a href="{{ route('logout') }}" class="dropdown-item">Đăng xuất</a>
+                <?php
+                } else {
+                ?>
+                  <a href="{{ route('login') }}" class="dropdown-item">Đăng nhập</a>
+                  <a href="{{ route('register') }}" class="dropdown-item">Đăng ký</a>
+                <?php
+                }
+                ?>
               </div>
             </div>
           </div>

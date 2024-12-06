@@ -27,7 +27,7 @@ class CheckoutController extends Controller
 
     public function index()
     {
-        $cartQuantity = $this->cartService->getCartQuantity();
+        $cartQuantity = $this->cartService->getCartQuantity(session('customerId'));
         $selectedCarts = session('selectedCarts', []);
 
         $subTotal = 0;
@@ -48,7 +48,7 @@ class CheckoutController extends Controller
         $phone = $request->input('phone_number');
         $note = $request->input('note');
         $payment = 'Thanh toán khi nhận hàng';
-        $customerId = 1;
+        $customerId = session('customerId');
 
         try {
             // Insert order
@@ -59,7 +59,7 @@ class CheckoutController extends Controller
 
             foreach ($productOrders as $cart) {
                 $this->orderDetailService->add($order->order_id, $cart->product->product_id, $cart->quantity);
-                $this->cartService->deleteProductInCart($cart->product->product_id);
+                $this->cartService->deleteProductInCart($cart->product->product_id, session('customerId'));
             }
 
             session()->forget('selectedCarts');
@@ -78,7 +78,7 @@ class CheckoutController extends Controller
         $phone = $request->input('phone_number');
         $note = $request->input('note');
         $payment = 'VnPay';
-        $customerId = 1;
+        $customerId = session('customerId');
 
         // try {
         // Insert order
@@ -90,7 +90,7 @@ class CheckoutController extends Controller
 
         foreach ($productOrders as $cart) {
             $this->orderDetailService->add($order->order_id, $cart->product->product_id, $cart->quantity);
-            $this->cartService->deleteProductInCart($cart->product->product_id);
+            $this->cartService->deleteProductInCart($cart->product->product_id, session('customerId'));
             $total_money += $cart->quantity * $cart->product->price;
         }
 
@@ -165,7 +165,7 @@ class CheckoutController extends Controller
         if ($request->vnp_ResponseCode == '00') {
             try {
                 $vnpayData = $request->all();
-                $customerId = 1;
+                $customerId = session('customerId');
 
                 $dataPayment = [
                     'total_money' => $vnpayData['vnp_Amount'] / 100,

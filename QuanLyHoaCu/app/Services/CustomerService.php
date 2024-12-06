@@ -5,14 +5,12 @@ namespace App\Services;
 use App\Models\Account;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class CustomerService
 {
     protected $customer;
     protected $account;
-
-    // get id of customer after login
-    protected $customerId = 1;
 
     public function __construct(Customer $customer, Account $account)
     {
@@ -20,17 +18,22 @@ class CustomerService
         $this->account = $account;
     }
 
-    public function getDataToProfile()
+    public function getDataToProfile($customerId)
     {
         return $this->customer
             ->with('account')
-            ->where('customer_id', $this->customerId)
+            ->where('customer_id', $customerId)
             ->first();
     }
 
-    public function updateProfile($data)
+    public function getCustomerByAccountId($accountId)
     {
-        $customer = $this->customer->find($this->customerId);
+        return $this->customer->where('account_id', $accountId)->first();
+    }
+
+    public function updateProfile($data, $customerId)
+    {
+        $customer = $this->customer->find($customerId);
         if (empty($data['avatar'])) {
             $data['avatar'] = $customer->avatar;
         }
@@ -40,10 +43,10 @@ class CustomerService
         return back()->with('success', 'Cập nhật thành công');
     }
 
-    public function updatePassword($data)
+    public function updatePassword($data, $customerId)
     {
         $accountId = $this->customer
-            ->find($this->customerId)
+            ->find($customerId)
             ->account_id;
 
         $account = $this->account->find($accountId);

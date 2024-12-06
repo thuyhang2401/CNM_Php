@@ -80,9 +80,20 @@
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
-                                <a href="{{ route('orderscus.index') }}" class="dropdown-item">Đơn hàng</a>
-                                <a href="#" class="dropdown-item">Đăng xuất</a>
+                                <?php
+                                if (session('customerId') != null) {
+                                ?>
+                                    <a href="{{ route('customer.profile') }}" class="dropdown-item">Tài khoản của tôi</a>
+                                    <a href="{{ route('orderscus.index') }}" class="dropdown-item">Đơn hàng</a>
+                                    <a href="{{ route('logout') }}" class="dropdown-item">Đăng xuất</a>
+                                <?php
+                                } else {
+                                ?>
+                                    <a href="{{ route('login') }}" class="dropdown-item">Đăng nhập</a>
+                                    <a href="{{ route('register') }}" class="dropdown-item">Đăng ký</a>
+                                <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -629,11 +640,68 @@
     </div>
     <!-- Copyright End -->
 
+    @if (session('success'))
 
+    <div id="success-header-modal" class="modal fade show" tabindex="-1" role="dialog"
+        aria-labelledby="success-header-modalLabel" style="padding-right: 16px; background: #22222294;" aria-modal="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-success">
+                    <h4 class="modal-title text-white" id="success-header-modalLabel">Thông báo
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ session('success') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    @endif
+
+    @if (session('error'))
+
+    <div id="danger-header-modal" class="modal fade show" tabindex="-1" role="dialog"
+        aria-labelledby="danger-header-modalLabel" style="padding-right: 16px; background: #22222294;" aria-modal="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-danger">
+                    <h4 class="modal-title text-white" id="danger-header-modalLabel">Thông báo</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ session('error') }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    @endif
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hiển thị modal thông báo thành công nếu tồn tại session
+            if (document.getElementById('success-header-modal')) {
+                const successModal = new bootstrap.Modal(document.getElementById('success-header-modal'));
+                successModal.show();
+            }
+            // Hiển thị modal thông báo lỗi nếu tồn tại lỗi
+            if (document.getElementById('danger-header-modal')) {
+                const dangerModal = new bootstrap.Modal(document.getElementById('danger-header-modal'));
+                dangerModal.show();
+            }
+        });
+    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

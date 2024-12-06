@@ -19,8 +19,8 @@ class CartController extends Controller
 
     public function listCart()
     {
-        $carts = $this->cartService->getListCart();
-        $cartQuantity = $this->cartService->getCartQuantity();
+        $carts = $this->cartService->getListCart(session('customerId'));
+        $cartQuantity = $this->cartService->getCartQuantity(session('customerId'));
 
         return view(
             'cart',
@@ -36,7 +36,7 @@ class CartController extends Controller
         $productId = $request->input('productId');
         $quantity = $request->input('quantity');
 
-        $this->cartService->addProductToCart($productId, $quantity);
+        $this->cartService->addProductToCart($productId, session('customerId'), $quantity);
 
         return redirect()->route('cart.list');
     }
@@ -49,7 +49,7 @@ class CartController extends Controller
         foreach ($productIds as $productId) {
             $quantity = $quantities[$productId];
 
-            $this->cartService->updateQuantityInCart($productId, $quantity);
+            $this->cartService->updateQuantityInCart($productId, session('customerId'), $quantity);
         }
 
         return redirect()->route('cart.list');
@@ -57,7 +57,7 @@ class CartController extends Controller
 
     public function deleteCart($productId)
     {
-        $this->cartService->deleteProductInCart($productId);
+        $this->cartService->deleteProductInCart($productId, session('customerId'));
 
         return response()->json(['redirect' => route('cart.list')]);
     }
@@ -73,7 +73,7 @@ class CartController extends Controller
         $selectedCartIds = array_map('intval', explode(',', $selectedCartIds));
 
         // Lấy các object Cart từ database
-        $selectedCarts = $this->cartService->getListCartSelected($selectedCartIds);
+        $selectedCarts = $this->cartService->getListCartSelected($selectedCartIds, session('customerId'));
 
         session(['selectedCarts' => $selectedCarts]);
 

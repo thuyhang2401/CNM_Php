@@ -91,7 +91,7 @@
                 <span class="icon"><i class="mdi mdi-help-circle-outline"></i></span>
                 <span>About</span>
             </a>
-            <a title="Log out" class="navbar-item desktop-icon-only" href="#">
+            <a title="Log out" class="navbar-item desktop-icon-only" href="{{ route('logout') }}">
                 <span class="icon"><i class="mdi mdi-logout"></i></span>
                 <span>Log out</span>
             </a>
